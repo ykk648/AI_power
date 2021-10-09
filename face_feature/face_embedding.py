@@ -1,14 +1,14 @@
 import torch
-# from AI_power.face_feature.curricularface.model import curricularface_Backbone
 import torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms
 import cv2
 import numpy as np
-from AI_power.ai_utils  import down_sample
+from ai_utils import down_sample
 
+# https://github.com/neuralchen/SimSwap/blob/main/models/models.py
 ARCFACE_MODEL_PATH = 'pretrain_models/arcface_model/arcface_checkpoint.tjm'
-# CURRICULAR_MODEL_PATH = 'pretrain_models/CurricularFace/CurricularFace_Backbone.pth'
+# https://github.com/HuangYG123/CurricularFace
 CURRICULAR_MODEL_PATH = 'pretrain_models/CurricularFace/CurricularFace.tjm'
 
 
@@ -21,10 +21,6 @@ class FaceEmbedding:
                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
             ])
         elif model_type == 'cur':
-            # self.facenet = curricularface_Backbone()
-            # checkpoint = torch.load(CURRICULAR_MODEL_PATH)
-            # self.facenet.load_state_dict(checkpoint)
-
             self.facenet = torch.jit.load(CURRICULAR_MODEL_PATH)
             self.transformer = transforms.Compose([
                 transforms.ToTensor(),
