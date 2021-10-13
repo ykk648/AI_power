@@ -1,6 +1,6 @@
 ## convenience API for your AI power
 
-all prtrain models can be accessed by BaiDuPan:
+All prtrain models can be accessed by BaiDuPan:
 
 [link](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
 
@@ -11,7 +11,8 @@ all prtrain models can be accessed by BaiDuPan:
 
 ### Face Restore 
 
-- dfdnet Gpen ESRGAN etc. TODO
+- [Gpen](https://github.com/yangxy/GPEN)
+- dfdnet ESRGAN etc. TODO
 
 ### Face Quality
 
@@ -34,3 +35,9 @@ all prtrain models can be accessed by BaiDuPan:
 - torch2jit torch2onnx etc.
 - onnx2onnx-sim2tensorrt
 - onnx2tensorrt
+
+needs tensorrt onnx-simplifier
+
+`
+pip install nvidia-tensorrt==8.* --index-url https://pypi.ngc.nvidia.com
+`
