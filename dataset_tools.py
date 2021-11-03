@@ -1,15 +1,20 @@
-from AI_power.dataset_preprocess import count_mean_std, gen_txt_from_path
+from dataset_preprocess import count_mean_std, gen_txt_from_path
 
 """
 generate dataset list as follow formats:
 |-- data
     |-- train
         |--label1
-            |--*.jpg
+            |--dataset prefix 1
+                |--*.jpg
+            |--dataset prefix 2
+                |--*.jpg
         |--label2
-            |--*.jpg
-        |--label    
-            |--*.jpg
+            |--dataset prefix
+                |--*.jpg
+        |--label
+            |--dataset prefix
+                |--*.jpg
         ...
 
     |-- val
