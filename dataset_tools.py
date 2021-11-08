@@ -2,7 +2,7 @@ from dataset_preprocess import count_mean_std, gen_txt_from_path
 
 """
 generate dataset list as follow formats:
-|-- data
+|-- dataset
     |-- train
         |--label1
             |--dataset prefix 1
