@@ -6,10 +6,10 @@ import cv2
 import numpy as np
 from ai_utils import down_sample
 
-# https://github.com/neuralchen/SimSwap/blob/main/models/models.py
-ARCFACE_MODEL_PATH = 'pretrain_models/arcface_model/arcface_checkpoint.tjm'
+# https://github.com/neuralchen/SimSwap/blob/01a8d6d0a6fd7e7b0052a5832328fba33f2b8414/models/fs_model.py#L63
+ARCFACE_MODEL_PATH = 'pretrain_models/face_embedding/ArcFace.tjm'
 # https://github.com/HuangYG123/CurricularFace
-CURRICULAR_MODEL_PATH = 'pretrain_models/CurricularFace/CurricularFace.tjm'
+CURRICULAR_MODEL_PATH = 'pretrain_models/face_embedding/CurricularFace.tjm'
 
 
 class FaceEmbedding:
@@ -38,30 +38,34 @@ class FaceEmbedding:
 
     def latent_from_image(self, face_image):
         if type(face_image) == str:
-            face_image = cv2.imread(face_image)
-            # face_image = cv2.resize(face_image, (224, 224))
-            face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
+            face_image = Image.open(face_image).convert('RGB')
         elif type(face_image) == np.ndarray:
-            # print('got np array, assert its cv2 output.')
-            pass
+            print('Got np array, assert its cv2 output.')
+            face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
 
         with torch.no_grad():
-            face = Image.fromarray(face_image)
-            face = self.transformer(face)
-            # print(face)
+            face = self.transformer(face_image)
             face = face.unsqueeze(0)
             if self.gpu:
                 face = face.cuda()
-            # 输入尺寸为(112, 112)  RGB
-
-            face = down_sample(face, size=[112, 112])
-            # face = face * 2.0 - 1.0
-            # 人脸latent code为512维
-
+            if face.shape[2] != face.shape[3] != 112:
+                face = down_sample(face, size=[112, 112])
+            # input: RGB 0-1  output: 512 embedding
             face_latent = self.facenet(face)
-            # print(face_latent)
-            # norm = torch.norm(face_latent, 2, 1, True)
-            # face_latent = torch.div(face_latent, norm)
             face_latent = F.normalize(face_latent, p=2, dim=1)
+
         return face_latent[0]
 
+
+if __name__ == '__main__':
+    # CurricularFace
+    fb_cur = FaceEmbedding(model_type='cur', gpu_ids=[0])
+    latent_cur = fb_cur.latent_from_image('../test_img/fake_112.png')
+    print(latent_cur.shape)
+    print(latent_cur)
+
+    # ArcFace
+    fb_arc = FaceEmbedding(model_type='arc', gpu_ids=[0])
+    latent_arc = fb_arc.latent_from_image('../test_img/fake_112.png')
+    print(latent_arc.shape)
+    print(latent_arc)
