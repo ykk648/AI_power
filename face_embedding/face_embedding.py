@@ -1,10 +1,18 @@
+# -- coding: utf-8 --
+# @Time : 2021/11/10
+# @Author : ykk648
+# @Project : https://github.com/ykk648/AI_power
 import torch
 import torch.nn.functional as F
 from PIL import Image
 from torchvision import transforms
 import cv2
 import numpy as np
-from ai_utils import down_sample
+
+
+def down_sample(target_, size):
+    return F.interpolate(target_, size=size, mode='bilinear', align_corners=True)
+
 
 # https://github.com/neuralchen/SimSwap/blob/01a8d6d0a6fd7e7b0052a5832328fba33f2b8414/models/fs_model.py#L63
 ARCFACE_MODEL_PATH = 'pretrain_models/face_embedding/ArcFace.tjm'
@@ -39,6 +47,8 @@ class FaceEmbedding:
     def latent_from_image(self, face_image):
         if type(face_image) == str:
             face_image = Image.open(face_image).convert('RGB')
+            # face_image = cv2.cvtColor(cv2.imread(face_image), cv2.COLOR_BGR2RGB)
+
         elif type(face_image) == np.ndarray:
             print('Got np array, assert its cv2 output.')
             face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
