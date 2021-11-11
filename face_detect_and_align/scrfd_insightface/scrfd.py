@@ -14,14 +14,16 @@ import os.path as osp
 import cv2
 import sys
 
+
 def softmax(z):
     assert len(z.shape) == 2
     s = np.max(z, axis=1)
-    s = s[:, np.newaxis] # necessary step to do broadcasting
+    s = s[:, np.newaxis]  # necessary step to do broadcasting
     e_x = np.exp(z - s)
     div = np.sum(e_x, axis=1)
-    div = div[:, np.newaxis] # dito
+    div = div[:, np.newaxis]  # dito
     return e_x / div
+
 
 def distance2bbox(points, distance, max_shape=None):
     """Decode distance prediction to bounding box.
@@ -46,6 +48,7 @@ def distance2bbox(points, distance, max_shape=None):
         y2 = y2.clamp(min=0, max=max_shape[0])
     return np.stack([x1, y1, x2, y2], axis=-1)
 
+
 def distance2kps(points, distance, max_shape=None):
     """Decode distance prediction to bounding box.
 
@@ -60,14 +63,15 @@ def distance2kps(points, distance, max_shape=None):
     """
     preds = []
     for i in range(0, distance.shape[1], 2):
-        px = points[:, i%2] + distance[:, i]
-        py = points[:, i%2+1] + distance[:, i+1]
+        px = points[:, i % 2] + distance[:, i]
+        py = points[:, i % 2 + 1] + distance[:, i + 1]
         if max_shape is not None:
             px = px.clamp(min=0, max=max_shape[1])
             py = py.clamp(min=0, max=max_shape[0])
         preds.append(px)
         preds.append(py)
     return np.stack(preds, axis=-1)
+
 
 class SCRFD:
     def __init__(self, model_file=None, session=None):
@@ -102,27 +106,27 @@ class SCRFD:
         self.output_names = output_names
         self.use_kps = False
         self._num_anchors = 1
-        if len(outputs)==6:
+        if len(outputs) == 6:
             self.fmc = 3
             self._feat_stride_fpn = [8, 16, 32]
             self._num_anchors = 2
-        elif len(outputs)==9:
+        elif len(outputs) == 9:
             self.fmc = 3
             self._feat_stride_fpn = [8, 16, 32]
             self._num_anchors = 2
             self.use_kps = True
-        elif len(outputs)==10:
+        elif len(outputs) == 10:
             self.fmc = 5
             self._feat_stride_fpn = [8, 16, 32, 64, 128]
             self._num_anchors = 1
-        elif len(outputs)==15:
+        elif len(outputs) == 15:
             self.fmc = 5
             self._feat_stride_fpn = [8, 16, 32, 64, 128]
             self._num_anchors = 1
             self.use_kps = True
 
     def prepare(self, ctx_id, **kwargs):
-        if ctx_id<0:
+        if ctx_id < 0:
             self.session.set_providers(['CPUExecutionProvider'])
         nms_thresh = kwargs.get('nms_thresh', None)
         if nms_thresh is not None:
@@ -139,8 +143,8 @@ class SCRFD:
         bboxes_list = []
         kpss_list = []
         input_size = tuple(img.shape[0:2][::-1])
-        blob = cv2.dnn.blobFromImage(img, 1.0/128, input_size, (127.5, 127.5, 127.5), swapRB=False)
-        net_outs = self.session.run(self.output_names, {self.input_name : blob})
+        blob = cv2.dnn.blobFromImage(img, 1.0 / 128, input_size, (127.5, 127.5, 127.5), swapRB=False)
+        net_outs = self.session.run(self.output_names, {self.input_name: blob})
 
         input_height = blob.shape[2]
         input_width = blob.shape[3]
@@ -168,30 +172,30 @@ class SCRFD:
             if key in self.center_cache:
                 anchor_centers = self.center_cache[key]
             else:
-                #solution-1, c style:
-                #anchor_centers = np.zeros( (height, width, 2), dtype=np.float32 )
-                #for i in range(height):
+                # solution-1, c style:
+                # anchor_centers = np.zeros( (height, width, 2), dtype=np.float32 )
+                # for i in range(height):
                 #    anchor_centers[i, :, 1] = i
-                #for i in range(width):
+                # for i in range(width):
                 #    anchor_centers[:, i, 0] = i
 
-                #solution-2:
-                #ax = np.arange(width, dtype=np.float32)
-                #ay = np.arange(height, dtype=np.float32)
-                #xv, yv = np.meshgrid(np.arange(width), np.arange(height))
-                #anchor_centers = np.stack([xv, yv], axis=-1).astype(np.float32)
+                # solution-2:
+                # ax = np.arange(width, dtype=np.float32)
+                # ay = np.arange(height, dtype=np.float32)
+                # xv, yv = np.meshgrid(np.arange(width), np.arange(height))
+                # anchor_centers = np.stack([xv, yv], axis=-1).astype(np.float32)
 
-                #solution-3:
+                # solution-3:
                 anchor_centers = np.stack(np.mgrid[:height, :width][::-1], axis=-1).astype(np.float32)
-                #print(anchor_centers.shape)
+                # print(anchor_centers.shape)
 
-                anchor_centers = (anchor_centers * stride).reshape( (-1, 2) )
-                if self._num_anchors>1:
-                    anchor_centers = np.stack([anchor_centers]*self._num_anchors, axis=1).reshape( (-1,2) )
-                if len(self.center_cache)<100:
+                anchor_centers = (anchor_centers * stride).reshape((-1, 2))
+                if self._num_anchors > 1:
+                    anchor_centers = np.stack([anchor_centers] * self._num_anchors, axis=1).reshape((-1, 2))
+                if len(self.center_cache) < 100:
                     self.center_cache[key] = anchor_centers
 
-            pos_inds = np.where(scores>=thresh)[0]
+            pos_inds = np.where(scores >= thresh)[0]
             bboxes = distance2bbox(anchor_centers, bbox_preds)
             pos_scores = scores[pos_inds]
             pos_bboxes = bboxes[pos_inds]
@@ -199,19 +203,19 @@ class SCRFD:
             bboxes_list.append(pos_bboxes)
             if self.use_kps:
                 kpss = distance2kps(anchor_centers, kps_preds)
-                #kpss = kps_preds
-                kpss = kpss.reshape( (kpss.shape[0], -1, 2) )
+                # kpss = kps_preds
+                kpss = kpss.reshape((kpss.shape[0], -1, 2))
                 pos_kpss = kpss[pos_inds]
                 kpss_list.append(pos_kpss)
         return scores_list, bboxes_list, kpss_list
 
-    def detect(self, img, thresh=0.5, input_size = None, max_num=0, metric='default'):
+    def detect_faces(self, img, thresh=0.5, input_size=None, max_num=0, metric='default'):
         assert input_size is not None or self.input_size is not None
         input_size = self.input_size if input_size is None else input_size
-            
+
         im_ratio = float(img.shape[0]) / img.shape[1]
         model_ratio = float(input_size[1]) / input_size[0]
-        if im_ratio>model_ratio:
+        if im_ratio > model_ratio:
             new_height = input_size[1]
             new_width = int(new_height / im_ratio)
         else:
@@ -219,7 +223,7 @@ class SCRFD:
             new_height = int(new_width * im_ratio)
         det_scale = float(new_height) / img.shape[0]
         resized_img = cv2.resize(img, (new_width, new_height))
-        det_img = np.zeros( (input_size[1], input_size[0], 3), dtype=np.uint8 )
+        det_img = np.zeros((input_size[1], input_size[0], 3), dtype=np.uint8)
         det_img[:new_height, :new_width, :] = resized_img
 
         scores_list, bboxes_list, kpss_list = self.forward(det_img, thresh)
@@ -235,20 +239,20 @@ class SCRFD:
         keep = self.nms(pre_det)
         det = pre_det[keep, :]
         if self.use_kps:
-            kpss = kpss[order,:,:]
-            kpss = kpss[keep,:,:]
+            kpss = kpss[order, :, :]
+            kpss = kpss[keep, :, :]
         else:
             kpss = None
         if max_num > 0 and det.shape[0] > max_num:
             area = (det[:, 2] - det[:, 0]) * (det[:, 3] -
-                                                    det[:, 1])
+                                              det[:, 1])
             img_center = img.shape[0] // 2, img.shape[1] // 2
             offsets = np.vstack([
                 (det[:, 0] + det[:, 2]) / 2 - img_center[1],
                 (det[:, 1] + det[:, 3]) / 2 - img_center[0]
             ])
             offset_dist_squared = np.sum(np.power(offsets, 2.0), 0)
-            if metric=='max':
+            if metric == 'max':
                 values = area
             else:
                 values = area - offset_dist_squared * 2.0  # some extra weight on the centering
@@ -289,49 +293,4 @@ class SCRFD:
             order = order[inds + 1]
 
         return keep
-
-def get_scrfd(name, download=False, root='~/.insightface/models', **kwargs):
-    if not download:
-        assert os.path.exists(name)
-        return SCRFD(name)
-    else:
-        from .model_store import get_model_file
-        _file = get_model_file("scrfd_%s" % name, root=root)
-        return SCRFD(_file)
-
-
-def scrfd_2p5gkps(**kwargs):
-    return get_scrfd("2p5gkps", download=True, **kwargs)
-
-
-if __name__ == '__main__':
-    import glob
-    detector = SCRFD(model_file='/workspace/codes/SimSwapAPI_mini/pretrain_models/insightface_func/scrfd_10g_bnkps.onnx')
-    # detector = SCRFD(model_file='/workspace/codes/insightface-master/detection/scrfd/onnx/scrfd_500m_bnkps.onnx')
-    detector.prepare(-1)
-    img_paths = ['/workspace/codes/insightface-master/detection/scrfd/tests/data/t1.jpg']
-    for img_path in img_paths:
-        img = cv2.imread(img_path)
-
-        for _ in range(1):
-            ta = datetime.datetime.now()
-            bboxes, kpss = detector.detect(img, 0.5, input_size = (640, 640))
-            #bboxes, kpss = detector.detect(img, 0.5)
-            tb = datetime.datetime.now()
-            print('all cost:', (tb-ta).total_seconds()*1000)
-        print(img_path, bboxes.shape)
-        if kpss is not None:
-            print(kpss.shape)
-        for i in range(bboxes.shape[0]):
-            bbox = bboxes[i]
-            x1,y1,x2,y2,score = bbox.astype(np.int)
-            cv2.rectangle(img, (x1,y1)  , (x2,y2) , (255,0,0) , 2)
-            if kpss is not None:
-                kps = kpss[i]
-                for kp in kps:
-                    kp = kp.astype(np.int)
-                    cv2.circle(img, tuple(kp) , 1, (0,0,255) , 2)
-        filename = img_path.split('/')[-1]
-        print('output:', filename)
-        cv2.imwrite('./%s'%filename, img)
 
