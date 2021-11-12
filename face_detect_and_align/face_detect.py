@@ -21,6 +21,7 @@ MTCNN_MODEL_PATH = 'pretrain_models/face_detect/mtcnn_weights/'
 class FaceDetect:
     def __init__(self, mode='scrfd_500m'):
         self.mode = mode
+        assert self.mode in ['scrfd', 'scrf_500m', 'mtcnn']
         self.bboxes = self.kpss = self.image = None
         if 'scrfd' in self.mode:
             if self.mode == 'scrfd_500m':
@@ -59,6 +60,7 @@ class FaceDetect:
             mode: default mtcnn_512 arcface_512 arcface
         Returns:
         """
+        assert mode in ['default', 'mtcnn_512', 'arcface_512', 'arcface']
         if self.bboxes.shape[0] == 0:
             return None
         det_score = self.bboxes[..., 4]

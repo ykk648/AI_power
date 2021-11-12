@@ -14,16 +14,18 @@ All prtrain models can be accessed by BaiDuPan:
 - [Gpen](https://github.com/yangxy/GPEN)
 - dfdnet ESRGAN etc. TODO
 
-### Face Quality
+### Face Quality & Gender Classification
 
 - based on [mmclassification](https://github.com/open-mmlab/mmclassification), follow [install guide](https://github.com/open-mmlab/mmclassification/blob/master/docs/install.md)
 - supply pretrained model trained by private dataset, mind the face should be aligned first
 
+
 ### Face Detect & Align
 
 - ffhq align method
-- mtcnn from [FaceShifter](https://github.com/taotaonice/FaceShifter)
-- scrfd from [SimSwap](https://github.com/neuralchen/SimSwap)
+- mtcnn from [mtcnn-pytorch](https://github.com/TropComplique/mtcnn-pytorch)
+- scrfd from [insightface](https://github.com/deepinsight/insightface/tree/master/detection/scrfd)
+- conform multi similarity align methods
 
 ### Dataset Preprocess
 

@@ -25,7 +25,7 @@ import scipy.ndimage
 import dlib
 
 # download model from: http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2
-predictor = dlib.shape_predictor('./pretrain_models/face_detect/shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('./pretrain_models/face_detect/dlib/shape_predictor_68_face_landmarks.dat')
 
 
 def get_landmark(filepath):
@@ -144,4 +144,4 @@ def align_face_ffhq(filepath, output_size=1024):
 
 
 if __name__ == '__main__':
-    align_face_ffhq('../../align_face/dlrb5.jpg').save('aligned_dlrb5.jpg')
+    align_face_ffhq('test_img/fake.jpg').save('aligned_fake.jpg')

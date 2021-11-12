@@ -3,7 +3,10 @@ import PIL
 import torch.nn.functional as F
 import time
 import numpy as np
+import uuid
 
+def make_random_name(f_name):
+    return uuid.uuid4().hex + '.' + f_name.split('.')[-1]
 
 def down_sample(target_, size):
     return F.interpolate(target_, size=size, mode='bilinear', align_corners=True)

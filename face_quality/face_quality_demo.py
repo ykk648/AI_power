@@ -5,18 +5,14 @@ from mmcls.apis import inference_model, init_model, show_result_pyplot
 import shutil
 from tqdm import tqdm
 import os
-import uuid
-
-
-def make_random_name(f_name):
-    return uuid.uuid4().hex + '.' + f_name.split('.')[-1]
+from ai_utils import make_random_name
 
 
 def main():
     parser = ArgumentParser()
     parser.add_argument('--img_dir', default='', help='Image file')
     parser.add_argument('--config', default='config.py', help='Config file')
-    parser.add_argument('--checkpoint', default='pretrain_models/face_quality/epoch_23.pth', help='Checkpoint file')
+    parser.add_argument('--checkpoint', default='pretrain_models/face_quality/face_quality_epoch_23.pth', help='Checkpoint file')
     parser.add_argument('--device', default='cuda:0', help='Device used for inference')
     args = parser.parse_args()
 
