@@ -25,8 +25,8 @@ src5 = np.array([[54.796, 49.990], [60.771, 50.115], [76.673, 69.007],
                  [55.388, 89.702], [61.257, 89.050]],
                 dtype=np.float32)
 
-src = np.array([src1, src2, src3, src4, src5])
-src_map = {112: src, 224: src * 2, 512: src * (512 / 112)}
+multi_src = np.array([src1, src2, src3, src4, src5])
+multi_src_map = {112: multi_src, 224: multi_src * 2, 512: multi_src * (512 / 112)}
 
 arcface_src = np.array(
     [[38.2946, 51.6963], [73.5318, 51.5014], [56.0252, 71.7366],
@@ -56,6 +56,11 @@ arcface_src_512 = arcface_src * np.array([512 / 112, 512 / 112])
 arcface_src = np.expand_dims(arcface_src, axis=0)
 
 
+def get_src_modify(srcs, arcface_src):
+    srcs += ((arcface_src[2] - srcs[2][2]) * np.array([1, 1.8]))[None]
+    return srcs
+
+
 # lmk is prediction; src is template
 def estimate_norm(lmk, image_size=112, mode='arcface'):
     assert lmk.shape == (5, 2)
@@ -71,8 +76,13 @@ def estimate_norm(lmk, image_size=112, mode='arcface'):
         src = np.expand_dims(arcface_src_512, axis=0)
     elif mode == 'mtcnn_512':
         src = np.expand_dims(mtcnn_512, axis=0)
-    else:
+    elif mode == 'default_95':
+        src = get_src_modify(multi_src, arcface_src[0])
+        src_map = {112: src.copy(), 224: src.copy() * 2, 256: src.copy() * 256 / 112 * 0.95,
+                   512: src.copy() * (512 / 112) * 0.95}
         src = src_map[image_size]
+    else:
+        src = multi_src_map[image_size]
     for i in np.arange(src.shape[0]):
         tform.estimate(lmk, src[i])
         M = tform.params[0:2, :]
@@ -91,4 +101,3 @@ def norm_crop(img, landmark, crop_size=112, mode='arcface'):
     M, pose_index = estimate_norm(landmark, crop_size, mode)
     warped = cv2.warpAffine(img, M, (crop_size, crop_size), borderValue=0.0)
     return warped, M
-

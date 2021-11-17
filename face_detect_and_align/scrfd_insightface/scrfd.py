@@ -209,7 +209,7 @@ class SCRFD:
                 kpss_list.append(pos_kpss)
         return scores_list, bboxes_list, kpss_list
 
-    def detect_faces(self, img, thresh=0.5, input_size=None, max_num=0, metric='default'):
+    def detect_faces(self, img, thresh=0.5, input_size=None, max_num=0, metric='default', min_face_size=64.0):
         assert input_size is not None or self.input_size is not None
         input_size = self.input_size if input_size is None else input_size
 
@@ -243,7 +243,7 @@ class SCRFD:
             kpss = kpss[keep, :, :]
         else:
             kpss = None
-        if max_num > 0 and det.shape[0] > max_num:
+        if 0 < max_num < det.shape[0]:
             area = (det[:, 2] - det[:, 0]) * (det[:, 3] -
                                               det[:, 1])
             img_center = img.shape[0] // 2, img.shape[1] // 2
@@ -293,4 +293,3 @@ class SCRFD:
             order = order[inds + 1]
 
         return keep
-

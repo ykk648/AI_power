@@ -7,8 +7,8 @@ import numpy as np
 import cv2
 
 from ai_utils import MyTimer, load_img, img_show
-from scrfd_insightface import SCRFD
-from mtcnn_pytorch import MTCNN
+from .scrfd_insightface import SCRFD
+from .mtcnn_pytorch import MTCNN
 from face_detect_and_align.face_align_func import norm_crop
 
 # https://github.com/deepinsight/insightface/tree/master/detection/scrfd
@@ -21,7 +21,7 @@ MTCNN_MODEL_PATH = 'pretrain_models/face_detect/mtcnn_weights/'
 class FaceDetect:
     def __init__(self, mode='scrfd_500m'):
         self.mode = mode
-        assert self.mode in ['scrfd', 'scrf_500m', 'mtcnn']
+        assert self.mode in ['scrfd', 'scrfd_500m', 'mtcnn']
         self.bboxes = self.kpss = self.image = None
         if 'scrfd' in self.mode:
             if self.mode == 'scrfd_500m':
@@ -33,25 +33,35 @@ class FaceDetect:
         elif self.mode == 'mtcnn':
             self.det_model_mtcnn = MTCNN(model_dir=MTCNN_MODEL_PATH)
 
-    def get_bboxes(self, image, nms_thresh=0.5, max_num=0):
+    def get_bboxes(self, image, nms_thresh=0.5, max_num=0, min_bbox_size=None):
         """
         Args:
-            image: image path or Numpy array load by cv2
+            image: RGB image path or Numpy array load by cv2
             nms_thresh:
             max_num:
+            min_bbox_size:
         Returns:
         """
         self.image = load_img(image)
         if 'scrfd' in self.mode:
             self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(self.image, thresh=nms_thresh, max_num=max_num,
-                                                                       metric='max')
+                                                                       metric='max', min_face_size=64.0)
+            if min_bbox_size is not None:
+                self.bboxes_filter(min_bbox_size)
         else:
             pil_image = Image.fromarray(self.image)
-            self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=64.0,
+            min_bbox_size = 64 if min_bbox_size is None else min_bbox_size
+            self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
                                                                        thresholds=[0.6, 0.7, 0.8],
                                                                        nms_thresholds=[0.7, 0.7, 0.7])
-
         return self.bboxes, self.kpss
+
+    def bboxes_filter(self, min_bbox_size):
+        min_area = np.power(min_bbox_size, 2)
+        area_list = (self.bboxes[:, 2] - self.bboxes[:, 0]) * (self.bboxes[:, 3] - self.bboxes[:, 1])
+        min_index = np.where(area_list < min_area)
+        self.bboxes = np.delete(self.bboxes, min_index, axis=0)
+        self.kpss = np.delete(self.kpss, min_index, axis=0)
 
     def get_single_face(self, crop_size, mode='mtcnn_512'):
         """
@@ -60,9 +70,9 @@ class FaceDetect:
             mode: default mtcnn_512 arcface_512 arcface
         Returns:
         """
-        assert mode in ['default', 'mtcnn_512', 'arcface_512', 'arcface']
+        assert mode in ['default', 'mtcnn_512', 'arcface_512', 'arcface', 'default_95']
         if self.bboxes.shape[0] == 0:
-            return None
+            return None, None
         det_score = self.bboxes[..., 4]
         # select the face with the highest detection score
         best_index = np.argmax(det_score)
@@ -103,33 +113,3 @@ class FaceDetect:
                     kp = kp.astype(int)
                     cv2.circle(self.image, tuple(kp), 1, (0, 0, 255), 2)
         img_show(self.image)
-
-
-if __name__ == '__main__':
-    # # === face detect speed test and result show ===
-    # fd = FaceDetect(mode='mtcnn')
-    # img_path = 'test_img/fake.jpeg'
-    # with MyTimer() as mt:
-    #     # 3.47s
-    #     for i in range(100):
-    #         bboxes_mtcnn, kpss_mtcnn = fd.get_bboxes(img_path)
-    # # print(bboxes, kpss)
-    #
-    # fd = FaceDetect(mode='scrfd_500m')
-    # img_path = 'test_img/fake.jpeg'
-    # with MyTimer() as mt:
-    #     # 1.5s
-    #     for i in range(100):
-    #         bboxes_scrfd, kpss_scrfd = fd.get_bboxes(img_path)
-    # # print(bboxes_scrfd, kpss_scrfd)
-    # # fd.draw_face()
-
-    # === face detect and align ===
-    fd = FaceDetect(mode='scrfd_500m')
-    img_path = 'test_img/fake.jpeg'
-    _, _ = fd.get_bboxes(img_path)
-    # face_image, m_ = fd.get_single_face(crop_size=512, mode='default')
-    face_image, m_ = fd.get_single_face(crop_size=512, mode='mtcnn_512')
-    # face_image, m_ = fd.get_single_face(crop_size=512, mode='arcface_512')
-    # face_image, ms = fd.get_single_face(crop_size=112, mode='arcface')
-    img_show(face_image)
