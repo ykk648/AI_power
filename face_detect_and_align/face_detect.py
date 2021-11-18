@@ -67,7 +67,7 @@ class FaceDetect:
         """
         Args:
             crop_size:
-            mode: default mtcnn_512 arcface_512 arcface
+            mode: default mtcnn_512 arcface_512 arcface default_95
         Returns:
         """
         assert mode in ['default', 'mtcnn_512', 'arcface_512', 'arcface', 'default_95']
