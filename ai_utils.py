@@ -62,5 +62,8 @@ def load_img(image):
     return image
 
 
-def get_path_by_ext(this_dir, ext_list: list):
+def get_path_by_ext(this_dir, ext_list=None):
+    if ext_list is None:
+        print('Use image ext as default !')
+        ext_list = [".jpg", ".png", ".JPG", ".webp", ".jpeg"]
     return [p for p in Path(this_dir).rglob('*') if p.suffix in ext_list]

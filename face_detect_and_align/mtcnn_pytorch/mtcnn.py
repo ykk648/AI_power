@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import cv2
 from PIL import Image
-from torchvision import transforms as trans
-from torch.autograd import Variable
+# from torchvision import transforms as trans
+# from torch.autograd import Variable
 from .mtcnn_pytorch.src.get_nets import PNet, RNet, ONet
 from .mtcnn_pytorch.src.box_utils import nms, calibrate_box, get_image_boxes, convert_to_square
 from .mtcnn_pytorch.src.first_stage import run_first_stage

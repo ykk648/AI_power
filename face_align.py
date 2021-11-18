@@ -1,4 +1,4 @@
-from face_detect_and_align import FaceDetect
+from face_detect_and_align import FaceDetect5Landmarks
 import cv2
 import numpy as np
 from ai_utils import img_show, img_save, get_path_by_ext, MyTimer
@@ -38,7 +38,7 @@ if __name__ == '__main__':
     #     img_show(img_path)
 
     # == batch images face detect and align ==
-    fd = FaceDetect(mode='scrfd_500m')
+    fd = FaceDetect5Landmarks(mode='scrfd_500m')
     img_dir = ''
     exts = [".jpg", ".png", ".JPG", ".webp", ".jpeg"]
 

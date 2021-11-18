@@ -9,7 +9,7 @@ import cv2
 from ai_utils import MyTimer, load_img, img_show
 from .scrfd_insightface import SCRFD
 from .mtcnn_pytorch import MTCNN
-from face_detect_and_align.face_align_func import norm_crop
+from face_detect_and_align.face_align_utils import norm_crop
 
 # https://github.com/deepinsight/insightface/tree/master/detection/scrfd
 SCRFD_MODEL_PATH = 'pretrain_models/face_detect/scrfd_onnx/'
@@ -18,7 +18,7 @@ SCRFD_MODEL_PATH = 'pretrain_models/face_detect/scrfd_onnx/'
 MTCNN_MODEL_PATH = 'pretrain_models/face_detect/mtcnn_weights/'
 
 
-class FaceDetect:
+class FaceDetect5Landmarks:
     def __init__(self, mode='scrfd_500m'):
         self.mode = mode
         assert self.mode in ['scrfd', 'scrfd_500m', 'mtcnn']
