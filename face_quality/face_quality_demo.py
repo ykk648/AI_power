@@ -1,11 +1,10 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 from argparse import ArgumentParser
 from pathlib import Path
-from mmcls.apis import inference_model, init_model, show_result_pyplot
+from mmcls.apis import inference_model, init_model
 import shutil
 from tqdm import tqdm
-import os
-from ai_utils import make_random_name
+from utils.ai_utils import make_random_name
 
 
 def main():

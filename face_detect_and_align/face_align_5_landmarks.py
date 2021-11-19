@@ -6,7 +6,7 @@ from PIL import Image
 import numpy as np
 import cv2
 
-from ai_utils import MyTimer, load_img, img_show
+from utils import load_img_rgb, img_show
 from .scrfd_insightface import SCRFD
 from .mtcnn_pytorch import MTCNN
 from face_detect_and_align.face_align_utils import norm_crop
@@ -42,7 +42,7 @@ class FaceDetect5Landmarks:
             min_bbox_size:
         Returns:
         """
-        self.image = load_img(image)
+        self.image = load_img_rgb(image)
         if 'scrfd' in self.mode:
             self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(self.image, thresh=nms_thresh, max_num=max_num,
                                                                        metric='max', min_face_size=64.0)
@@ -68,7 +68,7 @@ class FaceDetect5Landmarks:
         Args:
             crop_size:
             mode: default mtcnn_512 arcface_512 arcface default_95
-        Returns:
+        Returns: cv2 image
         """
         assert mode in ['default', 'mtcnn_512', 'arcface_512', 'arcface', 'default_95']
         if self.bboxes.shape[0] == 0:
@@ -80,6 +80,7 @@ class FaceDetect5Landmarks:
         if self.kpss is not None:
             kpss = self.kpss[best_index]
         align_img, M = norm_crop(self.image, kpss, crop_size, mode=mode)
+        align_img = cv2.cvtColor(align_img, cv2.COLOR_RGB2BGR)
         return align_img, M
 
     def get_multi_face(self, crop_size, mode='mtcnn_512'):

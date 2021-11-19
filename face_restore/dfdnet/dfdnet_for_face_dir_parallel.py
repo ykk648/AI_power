@@ -1,21 +1,18 @@
-import os
-from options.test_options import TestOptions
+from options.test_options import DFDTestOptions
 from models import create_model
 from util.visualizer import save_crop
 import numpy as np
 from PIL import Image
 import torchvision.transforms as transforms
 import torch
-import random
 from skimage import io
 from tqdm import tqdm
 from face_detect_and_align import face_alignment_1adrianb
 # from multiprocessing import Process, Lock, Queue # multi process
 from multiprocessing.dummy import Process, Queue  # multi thread
-import os
 import time
 import queue
-from ai_utils import get_path_by_ext
+from utils.ai_utils import get_path_by_ext
 from pathlib import Path
 
 try:
@@ -200,7 +197,7 @@ def obtain_inputs(A_paths, Landmark_path):
 
 class DFDNetParallel:
     def __init__(self, ):
-        self.opt = TestOptions().parse()
+        self.opt = DFDTestOptions().parse()
         self.opt.serial_batches = True  # no shuffle
         self.opt.no_flip = True  # no flip
         self.opt.display_id = -1  # no visdom display

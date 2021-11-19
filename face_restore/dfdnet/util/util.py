@@ -6,6 +6,7 @@ from PIL import Image
 import os
 import torchvision
 
+
 # Converts a Tensor into an image array (numpy)
 # |imtype|: the desired type of the converted numpy array
 def tensor2im(input_image, norm=1, imtype=np.uint8):
@@ -13,14 +14,14 @@ def tensor2im(input_image, norm=1, imtype=np.uint8):
         image_tensor = input_image.data
     else:
         return input_image
-    if norm == 1: #for clamp -1 to 1
-        image_numpy = image_tensor[0].cpu().float().clamp_(-1,1).numpy()
-    elif norm == 2: # for norm through max-min
+    if norm == 1:  # for clamp -1 to 1   to BGR
+        image_numpy = image_tensor[0].cpu().float().clamp_(-1, 1).numpy()[::-1]
+    elif norm == 2:  # for norm through max-min
         image_ = image_tensor[0].cpu().float()
         max_ = torch.max(image_)
         min_ = torch.min(image_)
-        image_numpy = (image_ - min_)/(max_-min_)*2-1
-        image_numpy = image_numpy.numpy() 
+        image_numpy = (image_ - min_) / (max_ - min_) * 2 - 1
+        image_numpy = image_numpy.numpy()
     else:
         pass
     if image_numpy.shape[0] == 1:
@@ -29,18 +30,21 @@ def tensor2im(input_image, norm=1, imtype=np.uint8):
     image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
     # print(image_numpy.shape)
     return image_numpy.astype(imtype)
+
+
 def tensor2im3Channels(input_image, imtype=np.uint8):
     if isinstance(input_image, torch.Tensor):
         image_tensor = input_image.data
     else:
         return input_image
-    
-    image_numpy = image_tensor.cpu().float().clamp_(-1,1).numpy()
+
+    image_numpy = image_tensor.cpu().float().clamp_(-1, 1).numpy()
 
     # print(image_numpy.shape)
     image_numpy = (np.transpose(image_numpy, (1, 2, 0)) + 1) / 2.0 * 255.0
     # print(image_numpy.shape)
     return image_numpy.astype(imtype)
+
 
 def diagnose_network(net, name='network'):
     mean = 0.0
@@ -53,8 +57,6 @@ def diagnose_network(net, name='network'):
         mean = mean / count
     print(name)
     print(mean)
-
-
 
 
 def print_numpy(x, val=True, shp=False):
@@ -81,52 +83,51 @@ def mkdir(path):
 
 
 def print_current_losses(epoch, i, losses, t, t_data):
-        message = '(epoch: %d, iters: %d, time: %.3f, data: %.3f) ' % (epoch, i, t, t_data)
-        for k, v in losses.items():
-            message += '%s: %.3f ' % (k, v)
+    message = '(epoch: %d, iters: %d, time: %.3f, data: %.3f) ' % (epoch, i, t, t_data)
+    for k, v in losses.items():
+        message += '%s: %.3f ' % (k, v)
 
-        print(message)
-        # with open('', "a") as log_file:
-        #     log_file.write('%s\n' % message)
+    print(message)
+    # with open('', "a") as log_file:
+    #     log_file.write('%s\n' % message)
 
-def display_current_results(writer,visuals,losses,step,save_result):
+
+def display_current_results(writer, visuals, losses, step, save_result):
     for label, images in visuals.items():
-        if 'Mask' in label:#  or 'Scale' in label:
-            grid = torchvision.utils.make_grid(images,normalize=False, scale_each=True)
+        if 'Mask' in label:  # or 'Scale' in label:
+            grid = torchvision.utils.make_grid(images, normalize=False, scale_each=True)
             # pass
         else:
             pass
-        grid = torchvision.utils.make_grid(images,normalize=True, scale_each=True)
-        writer.add_image(label,grid,step)
-    for k,v in losses.items():
-        writer.add_scalar(k,v,step)
+        grid = torchvision.utils.make_grid(images, normalize=True, scale_each=True)
+        writer.add_image(label, grid, step)
+    for k, v in losses.items():
+        writer.add_scalar(k, v, step)
+
 
 def VisualFeature(input_feature, imtype=np.uint8):
     if isinstance(input_feature, torch.Tensor):
         image_tensor = input_feature.data
     else:
         return input_feature
-    
+
     image_ = image_tensor.cpu().float()
 
     if image_.size(1) == 3:
-        image_ = image_.permute(1,2,0)
+        image_ = image_.permute(1, 2, 0)
 
     # assert(image_.size(1) == 1)
 
-
-    
     #####norm 0 to 1
     max_ = torch.max(image_)
     min_ = torch.min(image_)
-    image_numpy = (image_ - min_)/(max_-min_)*2-1
+    image_numpy = (image_ - min_) / (max_ - min_) * 2 - 1
     image_numpy = image_numpy.numpy()
     image_numpy = (image_numpy + 1) / 2.0 * 255.0
     #####no norm
     # print((max_,min_))
     # image_numpy = image_.numpy()
     # image_numpy = image_numpy*255.0
-
 
     # print('wwwwwwwwwwwwww')
     # print(max_)

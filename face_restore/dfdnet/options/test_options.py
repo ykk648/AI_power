@@ -1,7 +1,7 @@
 from .base_options import BaseOptions
 
 
-class TestOptions(BaseOptions):
+class DFDTestOptions(BaseOptions):
     def initialize(self, parser):
         parser = BaseOptions.initialize(self, parser)
         # parser.add_argument('--dataroot', type=str, default='/home/Data/AllDataImages/2018_FaceFH', help='path to images (should have subfolders trainA, trainB, valA, valB, etc)')
@@ -15,6 +15,8 @@ class TestOptions(BaseOptions):
         parser.add_argument('--results_dir', type=str, default='./face_restore/dfdnet/Results/TestWholeResults', help='saves results here.')
         parser.add_argument('--upscale_factor', type=int, default=4, help='upscale factor for the whole input image (not for face)')
 
-        
+        parser.add_argument('--no_flip', type=bool, default=True)
+        parser.add_argument('--display_id', type=int, default=-1)
+
         self.isTrain = False
         return parser

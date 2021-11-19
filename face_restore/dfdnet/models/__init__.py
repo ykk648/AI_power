@@ -1,12 +1,12 @@
 import importlib
-from models.base_model import BaseModel
-
+from .base_model import BaseModel
+from .test_model import TestModel
 
 def find_model_using_name(model_name):
     # Given the option --model [modelname],
     # the file "models/modelname_model.py"
     # will be imported.
-    model_filename = "models." + model_name + "_model"
+    model_filename = "." + model_name + "_model"
     modellib = importlib.import_module(model_filename)
 
     # In the file, the class called ModelNameModel() will
@@ -31,7 +31,8 @@ def get_option_setter(model_name):
 
 
 def create_model(opt):
-    model = find_model_using_name(opt.model)
-    instance = model()
+    instance = TestModel()
+    # model
+    # instance = model()
     instance.initialize(opt)
     return instance

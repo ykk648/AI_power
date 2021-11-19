@@ -1,33 +1,27 @@
 # -- coding: utf-8 --
-# @Time : 2021/11/17
+# @Time : 2021/11/19
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
-import torch
-import torch.nn.functional as F
-import cv2
-import numpy as np
-from cv2box import flush_print
 
-from ai_utils import img_save, img_show
+from cv2box import flush_print
+import torch
+import cv2
+import torch.nn.functional as F
+import numpy as np
 
 GPEN_MODEL_PATH = 'pretrain_models/face_restore/gpen/GPEN-512.pth'
 
 
-class FaceRestore:
-    def __init__(self, gpu=True, mode='gpen', verbose=True):
-        self.gpu = gpu
-        self.mode = mode
-        self.face_result = None
-        self.verbose = verbose
-        if self.mode == 'gpen':
-            flush_print('Start init Gpen model !')
-            # op init costs time
-            from face_restore.gpen.face_gan import FaceGAN
-            self.gpen = FaceGAN(model_path=GPEN_MODEL_PATH, size=512,
-                                model='GPEN-512', channel_multiplier=2, use_gpu=self.gpu)
-            flush_print('Gpen model init done !')
+class GPEN:
+    def __init__(self, size=512, use_gpu=True):
+        flush_print('Start init Gpen model !')
+        # op init costs time
+        from face_restore.gpen.face_gan import FaceGAN
+        self.gpen = FaceGAN(model_path=GPEN_MODEL_PATH, size=size,
+                            model='GPEN-512', channel_multiplier=2, use_gpu=use_gpu)
+        flush_print('Gpen model init done !')
 
-    def _gpen_face_enhance(self, img_):
+    def forward(self, img_):
         print(type(img_))
         if type(img_) == str:
             img_ = cv2.imread(img_)
@@ -50,11 +44,3 @@ class FaceRestore:
         elif type(img_) == np.array:
             # read from opencv by default
             return self.gpen.process(img_)
-
-    def forward(self, img_, output_size=256):
-        if self.mode == 'gpen':
-            self.face_result = self._gpen_face_enhance(img_)
-        return cv2.resize(self.face_result, (output_size, output_size))
-
-    def save(self, img_save_p):
-        img_save(self.face_result, img_save_p, self.verbose)

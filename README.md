@@ -12,7 +12,8 @@ All prtrain models can be accessed by BaiDuPan:
 ### Face Restore 
 
 - [Gpen](https://github.com/yangxy/GPEN)
-- dfdnet ESRGAN etc. TODO
+- [DFDNet](https://github.com/csxmli2016/DFDNet) (add batch parallel support)
+- ESRGAN etc. TODO
 
 ### Face Quality & Gender Classification
 

@@ -12,11 +12,12 @@ face_detector_kwargs = {
     "filter_threshold": 0.5,
 }
 
+# input RGB image or image path
 fa = FaceAlignment(LandmarksType._2D, device='cuda', flip_input=False, face_detector='sfd',face_detector_kwargs=face_detector_kwargs)
 
 
 input = io.imread('./test_img/multi_test.jpg')
-preds = fa.get_landmarks(image_or_path=input)[-1]
+preds = fa.get_landmarks(rgb_image_or_path=input)[-1]
 print(preds)
 
 # 2D-Plot

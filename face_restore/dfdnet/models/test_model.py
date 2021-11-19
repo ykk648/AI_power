@@ -36,7 +36,7 @@ class TestModel(BaseModel):
     def set_input(self, input):
         self.real_A = input['A'].to(self.device) #degraded img
         self.real_C = input['C'].to(self.device) #groundtruth
-        self.image_paths = input['A_paths']
+        # self.image_paths = input['A_paths']
         self.Part_locations = input['Part_locations']
 
     def forward(self):

@@ -1,1 +1,1 @@
-from .face_restore import FaceRestore
+from .face_restore_api import FaceRestore
