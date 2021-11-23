@@ -7,6 +7,7 @@ import cv2
 from utils.image_io import img_save, img_show
 from .gpen import GPEN
 from .dfdnet import DFDNet
+from .gfpgan import GFPGAN
 
 
 class FaceRestore:
@@ -19,6 +20,8 @@ class FaceRestore:
             self.fr = GPEN(size=512, use_gpu=self.use_gpu)
         elif self.mode == 'dfdnet':
             self.fr = DFDNet(use_gpu=self.use_gpu)
+        elif self.mode == 'gfpgan':
+            self.fr = GFPGAN(use_gpu=self.use_gpu)
 
     def forward(self, img_, output_size=256):
         """

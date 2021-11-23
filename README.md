@@ -13,6 +13,7 @@ All prtrain models can be accessed by BaiDuPan:
 
 - [Gpen](https://github.com/yangxy/GPEN)
 - [DFDNet](https://github.com/csxmli2016/DFDNet) (add batch parallel support)
+- [GFPGAN](https://github.com/TencentARC/GFPGAN)
 - ESRGAN etc. TODO
 
 ### Face Quality & Gender Classification
