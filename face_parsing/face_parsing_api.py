@@ -10,7 +10,13 @@ import numpy as np
 import torchvision.transforms as transforms
 import cv2
 from utils.image_io import load_img_rgb, img_show
+from utils.ai_utils import MyTimer
+from model import BiSeNet
+import onnxruntime
+from model_convert.onnx_model import ONNXModel
 
+# MODEL_PATH = 'pretrain_models/face_parsing/79999_iter.onnx'
+# MODEL_PATH = 'pretrain_models/face_parsing/79999_iter.pth'
 MODEL_PATH = 'pretrain_models/face_parsing/79999_iter.tjm'
 
 
@@ -18,7 +24,21 @@ class FaceParsing:
     def __init__(self):
         self.parsing = None
         self.image = None
+
+        # # onnx gpu 1.6s/100iter cpu 3.05s/100iter
+        # self.net = ONNXModel(MODEL_PATH)
+
+        # torch.jit  gpu 1.2s/100iter cpu 7.8s/100iter
         self.net = torch.jit.load(MODEL_PATH)
+        # self.net = torch.jit.load(MODEL_PATH, map_location=torch.device('cpu'))
+
+        # torch
+        # n_classes = 19
+        # self.net = BiSeNet(n_classes=n_classes)
+        # self.net.cuda()
+        # self.net.load_state_dict(torch.load(MODEL_PATH))
+
+        self.net.eval()
 
     def forward(self, face_img_):
 
@@ -32,8 +52,17 @@ class FaceParsing:
             img = to_tensor(self.image)
             img = torch.unsqueeze(img, 0)
             img = img.cuda()
-            out = self.net(img)[0]
-            self.parsing = out.squeeze(0).cpu().numpy().argmax(0)
+
+            # input_names = ["x"]
+            # output_names = ["feat_out"]
+            # torch.onnx.export(self.net, img, "face_parsing.onnx", verbose=True, input_names=input_names,
+            #                   output_names=output_names, opset_version=13)
+            #
+            # out = self.net(img)
+
+            out = self.net.forward(img)[0]
+
+            self.parsing = out.cpu().numpy().squeeze(0).argmax(0)
             # print(self.parsing)
             # print(np.unique(self.parsing))
         return self.parsing

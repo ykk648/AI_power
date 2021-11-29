@@ -16,7 +16,7 @@ face_detector_kwargs = {
 fa = FaceAlignment(LandmarksType._2D, device='cuda', flip_input=False, face_detector='sfd',face_detector_kwargs=face_detector_kwargs)
 
 
-input = io.imread('./test_img/multi_test.jpg')
+input = io.imread('./test_img/test2.jpg')
 preds = fa.get_landmarks(rgb_image_or_path=input)[-1]
 print(preds)
 
