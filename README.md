@@ -18,6 +18,11 @@ All prtrain models can be accessed by BaiDuPan:
 - Arcface from [SimSwap](https://github.com/neuralchen/SimSwap) (mod to jit model)
 - [CurricularFace](https://github.com/HuangYG123/CurricularFace) (mod to jit model)
 
+### Face Parsing
+
+- face parsing from [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch)
+- onnx and torch.jit speed compare `face_parsing/face_parsing_api.py`
+
 ### Face Restore 
 
 - [Gpen](https://github.com/yangxy/GPEN)
