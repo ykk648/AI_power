@@ -13,6 +13,8 @@ using opencv as the default image read method
 """
 
 
+
+
 def load_img_rgb(image):
     if type(image) == str:
         try:

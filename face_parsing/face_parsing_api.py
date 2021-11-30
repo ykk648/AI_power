@@ -10,6 +10,7 @@ import numpy as np
 import torchvision.transforms as transforms
 import cv2
 from utils.image_io import load_img_rgb, img_show
+from cv2box import CVImage
 from utils.ai_utils import MyTimer
 from model import BiSeNet
 import onnxruntime
@@ -42,16 +43,15 @@ class FaceParsing:
 
     def forward(self, face_img_):
 
-        to_tensor = transforms.Compose([
+        trans = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ])
         with torch.no_grad():
-            img = load_img_rgb(face_img_)
-            self.image = cv2.resize(img, (512, 512))
-            img = to_tensor(self.image)
-            img = torch.unsqueeze(img, 0)
-            img = img.cuda()
+
+            img = CVImage(face_img_)
+            self.image = img.resize(512).bgr
+            img = img.set_transform(trans).tensor.cuda()
 
             # input_names = ["x"]
             # output_names = ["feat_out"]

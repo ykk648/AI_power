@@ -15,9 +15,6 @@ def down_sample(target_, size):
     return F.interpolate(target_, size=size, mode='bilinear', align_corners=True)
 
 
-
-
-
 class MyTimer(object):
     """
     timer
