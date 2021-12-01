@@ -5,8 +5,9 @@
 from PIL import Image
 import numpy as np
 import cv2
+from cv2box.utils import np_norm
+from cv2box import CVImage
 
-from utils import load_img_rgb, img_show
 from .scrfd_insightface import SCRFD
 from .mtcnn_pytorch import MTCNN
 from face_detect_and_align.face_align_utils import norm_crop
@@ -19,8 +20,11 @@ MTCNN_MODEL_PATH = 'pretrain_models/face_detect/mtcnn_weights/'
 
 
 class FaceDetect5Landmarks:
-    def __init__(self, mode='scrfd_500m'):
+    def __init__(self, mode='scrfd_500m', tracking=False):
         self.mode = mode
+        self.tracking = tracking
+        self.dis_list = []
+        self.last_bboxes_ = None
         assert self.mode in ['scrfd', 'scrfd_500m', 'mtcnn']
         self.bboxes = self.kpss = self.image = None
         if 'scrfd' in self.mode:
@@ -42,7 +46,7 @@ class FaceDetect5Landmarks:
             min_bbox_size:
         Returns:
         """
-        self.image = load_img_rgb(image)
+        self.image = CVImage(image).rgb
         if 'scrfd' in self.mode:
             self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(self.image, thresh=nms_thresh, max_num=max_num,
                                                                        metric='max', min_face_size=64.0)
@@ -54,6 +58,17 @@ class FaceDetect5Landmarks:
             self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
                                                                        thresholds=[0.6, 0.7, 0.8],
                                                                        nms_thresholds=[0.7, 0.7, 0.7])
+
+        if self.tracking:
+            if self.last_bboxes_ is None:
+                self.last_bboxes_ = self.bboxes
+                return self.bboxes, self.kpss
+            else:
+                return self.tracking_filter()
+
+    def tracking_filter(self):
+        for i in range(len(self.bboxes)):
+            self.dis_list.append(np.linalg.norm(np_norm(self.bboxes[i]) - np_norm(self.last_bboxes_[0])))
         return self.bboxes, self.kpss
 
     def bboxes_filter(self, min_bbox_size):
@@ -74,11 +89,16 @@ class FaceDetect5Landmarks:
         if self.bboxes.shape[0] == 0:
             return None, None
         det_score = self.bboxes[..., 4]
-        # select the face with the highest detection score
-        best_index = np.argmax(det_score)
-        kpss = None
-        if self.kpss is not None:
-            kpss = self.kpss[best_index]
+        if self.tracking:
+            best_index = np.argmax(np.array(self.dis_list))
+            kpss = None
+            if self.kpss is not None:
+                kpss = self.kpss[best_index]
+        else:
+            best_index = np.argmax(det_score)
+            kpss = None
+            if self.kpss is not None:
+                kpss = self.kpss[best_index]
         align_img, M = norm_crop(self.image, kpss, crop_size, mode=mode)
         align_img = cv2.cvtColor(align_img, cv2.COLOR_RGB2BGR)
         return align_img, M
@@ -113,4 +133,4 @@ class FaceDetect5Landmarks:
                 for kp in kps:
                     kp = kp.astype(int)
                     cv2.circle(self.image, tuple(kp), 1, (0, 0, 255), 2)
-        img_show(self.image)
+        CVImage(self.image, image_format='cv2').show()

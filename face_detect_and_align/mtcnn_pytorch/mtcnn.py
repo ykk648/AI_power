@@ -257,5 +257,5 @@ class MTCNN:
             bounding_boxes = bounding_boxes[keep]
             landmarks = landmarks[keep]
 
-        # return bounding_boxes, landmarks
-        return bounding_boxes, landmarks.reshape(2, 5).T[np.newaxis, :, :]
+        return bounding_boxes, landmarks.reshape(-1, 2, 5).transpose(0, 2, 1)
+        # return bounding_boxes, landmarks.reshape(2, 5).T[np.newaxis, :, :]
