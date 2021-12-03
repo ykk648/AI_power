@@ -4,8 +4,7 @@ from torch.nn import init
 import functools
 from torch.optim import lr_scheduler
 import torch.nn.functional as F
-from torch.nn import Parameter as P
-from ..util import util
+
 from torchvision import models
 import scipy.io as sio
 import numpy as np
@@ -18,7 +17,7 @@ import random
 import os
 import math
 
-from ..sync_batchnorm import convert_model
+from face_restore.dfdnet.sync_batchnorm import convert_model
 ####
 
 ###############################################################################

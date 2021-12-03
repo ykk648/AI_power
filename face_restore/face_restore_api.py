@@ -4,7 +4,8 @@
 # @Project : https://github.com/ykk648/AI_power
 
 import cv2
-from utils.image_io import img_save, img_show
+# from utils.image_io import img_save, img_show
+from cv2box import CVImage
 from .gpen import GPEN
 from .dfdnet import DFDNet
 from .gfpgan import GFPGAN
@@ -34,4 +35,6 @@ class FaceRestore:
         return cv2.resize(self.face_result, (output_size, output_size))
 
     def save(self, img_save_p):
-        img_save(self.face_result, img_save_p, self.verbose)
+        CVImage(self.face_result).save(img_save_p)
+        # img_save(self.face_result, img_save_p, self.verbose)
+

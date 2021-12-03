@@ -4,8 +4,7 @@
 # @Project : https://github.com/ykk648/AI_power
 
 from .utils import GFPGANer
-from utils.image_io import load_img_bgr
-
+from cv2box import CVImage
 
 class GFPGAN:
     def __init__(self, use_gpu=True):
@@ -24,10 +23,7 @@ class GFPGAN:
             img_: BGR image or path
         Returns: BGR image
         """
-        if type(img_) == str:
-            image_bgr = load_img_bgr(img_)
-        else:
-            image_bgr = img_
+        image_bgr = CVImage(img_).bgr
         try:
             cropped_face = self.model.enhance_single_aligned_image(image_bgr)
             return cropped_face

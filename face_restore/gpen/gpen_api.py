@@ -3,7 +3,7 @@
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
 
-from cv2box import flush_print
+from cv2box.utils import flush_print
 import torch
 import cv2
 import torch.nn.functional as F
@@ -22,7 +22,7 @@ class GPEN:
         flush_print('Gpen model init done !')
 
     def forward(self, img_):
-        print(type(img_))
+        # print(type(img_))
         if type(img_) == str:
             img_ = cv2.imread(img_)
             return self.gpen.process(img_)
@@ -41,6 +41,6 @@ class GPEN:
                 enhanced = torch.clip(enhanced, min=0.0, max=1.0)
                 # enhanced = F.interpolate(enhanced, size=(output_size, output_size))
                 return enhanced[0]
-        elif type(img_) == np.array:
+        elif isinstance(img_, np.ndarray):
             # read from opencv by default
             return self.gpen.process(img_)

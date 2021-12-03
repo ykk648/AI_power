@@ -6,7 +6,7 @@ from face_restore.dfdnet.options.test_options import DFDTestOptions
 from face_detect_and_align import FaceAlignment, LandmarksType
 from .models import create_model
 from .util.util import tensor2im
-from utils import load_img_rgb
+from cv2box import CVImage
 import numpy as np
 from PIL import Image
 import torchvision.transforms as transforms
@@ -80,10 +80,9 @@ class DFDNet:
             img_: BGR image or path
         Returns: BGR image
         """
-        if type(img_) == str:
-            image_rgb = load_img_rgb(img_)
-        else:
-            image_rgb = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
+
+        image_rgb = CVImage(img_).rgb
+
         try:
             preds_all = self.fa.get_landmarks(img_)
             ins = 0
