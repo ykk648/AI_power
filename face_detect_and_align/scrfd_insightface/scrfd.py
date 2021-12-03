@@ -209,7 +209,7 @@ class SCRFD:
                 kpss_list.append(pos_kpss)
         return scores_list, bboxes_list, kpss_list
 
-    def detect_faces(self, img, thresh=0.5, input_size=None, max_num=0, metric='default', min_face_size=64.0):
+    def detect_faces(self, img, thresh=0.5, input_size=None, max_num=0, metric='default'):
         assert input_size is not None or self.input_size is not None
         input_size = self.input_size if input_size is None else input_size
 

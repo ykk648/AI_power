@@ -24,7 +24,7 @@ class FaceDetect5Landmarks:
         self.mode = mode
         self.tracking = tracking
         self.dis_list = []
-        self.last_bboxes_ = None
+        self.last_bboxes_ = []
         assert self.mode in ['scrfd', 'scrfd_500m', 'mtcnn']
         self.bboxes = self.kpss = self.image = None
         if 'scrfd' in self.mode:
@@ -35,6 +35,7 @@ class FaceDetect5Landmarks:
             self.det_model_scrfd = SCRFD(scrfd_model_path)
             self.det_model_scrfd.prepare(ctx_id=0, input_size=(640, 640))
         elif self.mode == 'mtcnn':
+            assert not tracking
             self.det_model_mtcnn = MTCNN(model_dir=MTCNN_MODEL_PATH)
 
     def get_bboxes(self, image, nms_thresh=0.5, max_num=0, min_bbox_size=None):
@@ -47,29 +48,38 @@ class FaceDetect5Landmarks:
         Returns:
         """
         self.image = CVImage(image).rgb
-        if 'scrfd' in self.mode:
-            self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(self.image, thresh=nms_thresh, max_num=max_num,
-                                                                       metric='max', min_face_size=64.0)
-            if min_bbox_size is not None:
-                self.bboxes_filter(min_bbox_size)
-        else:
-            pil_image = Image.fromarray(self.image)
-            min_bbox_size = 64 if min_bbox_size is None else min_bbox_size
-            self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
-                                                                       thresholds=[0.6, 0.7, 0.8],
-                                                                       nms_thresholds=[0.7, 0.7, 0.7])
 
         if self.tracking:
-            if self.last_bboxes_ is None:
+            if len(self.last_bboxes_) == 0:
+                self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(image, thresh=nms_thresh, max_num=1,
+                                                                           metric='default')
                 self.last_bboxes_ = self.bboxes
-                return self.bboxes, self.kpss
+                # return self.bboxes, self.kpss
             else:
-                return self.tracking_filter()
+                self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(image, thresh=nms_thresh, max_num=0,
+                                                                           metric='default')
+                self.bboxes, self.kpss = self.tracking_filter()
+        else:
+            if 'scrfd' in self.mode:
+                self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(self.image, thresh=nms_thresh,
+                                                                           max_num=max_num,
+                                                                           metric='default')
+            else:
+                pil_image = Image.fromarray(self.image)
+                min_bbox_size = 64 if min_bbox_size is None else min_bbox_size
+                self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
+                                                                           thresholds=[0.6, 0.7, 0.8],
+                                                                           nms_thresholds=[0.7, 0.7, 0.7])
 
     def tracking_filter(self):
         for i in range(len(self.bboxes)):
             self.dis_list.append(np.linalg.norm(np_norm(self.bboxes[i]) - np_norm(self.last_bboxes_[0])))
-        return self.bboxes, self.kpss
+        if not self.dis_list:
+            return [], []
+        best_index = np.argmin(np.array(self.dis_list))
+        self.dis_list = []
+        self.last_bboxes_ = [self.bboxes[best_index]]
+        return self.last_bboxes_, [self.kpss[best_index]]
 
     def bboxes_filter(self, min_bbox_size):
         min_area = np.power(min_bbox_size, 2)
