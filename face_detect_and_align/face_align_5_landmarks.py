@@ -70,6 +70,7 @@ class FaceDetect5Landmarks:
                 self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
                                                                            thresholds=[0.6, 0.7, 0.8],
                                                                            nms_thresholds=[0.7, 0.7, 0.7])
+            return self.bboxes, self.kpss
 
     def tracking_filter(self):
         for i in range(len(self.bboxes)):

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>AI html demo</title>
+    <meta name="theme-color" content="#563d7c">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}"></head>
+
+  <body class="bg-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h1>face align and latent extract</h1></div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <img id="img-preview" src="#" alt="preview image" class="img-thumbnail" style="max-height:400px; display:none;">
+          <br/>
+          <form id="upload-file" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="InputFile">Input image:</label>
+              <input name="image" type="file" class="form-control-file" id="InputFile" aria-describedby="fileHelp">
+              <small id="fileHelp" class="form-text text-muted">must be image format,
+                < 10M</small></div>
+            <button id="upload-file-btn" type="button" class="btn btn-primary">upload</button></form>
+        </div>
+        <div class="col-6">
+          <!-- <div class="loader" style="display:none;"></div>-->
+          <div id="results">
+            <!-- <img id="img_show" src='' alt="crop face" style="max-height:400px;">--></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <br>
+          <br>
+          <h3>API Demo</h3>
+          <h4>curl</h4>
+          <code>curl -X POST -F file=@test.jpg http://192.168.6.190:5005/predict</code>
+          <h4>get</h4>
+          <code>'latent' 'crop_face' 'status'</code></div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <span class="text-muted">CV ljt © 2021</span></div>
+    </footer>
+    <script src='https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript">function readURL(input) {
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            $('#img-preview').attr('src', e.target.result);
+            $('#img-preview').show();
+            $("#results").html('');
+          }
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $("#InputFile").change(function() {
+        readURL(this);
+      });
+
+      $('#upload-file-btn').click(function() {
+        // $('.loader').show();
+        $("#results").html('');
+
+        var form_data = new FormData($('#upload-file')[0]);
+        $.ajax({
+          type: 'POST',
+          url: '/predict',
+          data: form_data,
+          contentType: false,
+          cache: false,
+          processData: false,
+          async: false,
+          success: function(data) {
+            console.log(data.success);
+            get_image = data["crop_face"];
+            latent = data["latent"];
+            status_get = data["status"];
+            // $("#img_show").attr("src",get_image);
+            $("#results").append('<h4> status </h4>' + '<span>' + status_get + '</span>' + '<h4> crop face </h4>' + '<img src=' + get_image + '>' + '<h4> image latent </h4>' + '<textarea rows="10" cols="30">' + latent + '</textarea>')
+
+            // $('.loader').hide();
+          },
+        });
+      });</script>
+  </body>
+
+</html>
