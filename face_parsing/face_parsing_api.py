@@ -9,11 +9,9 @@ import torch
 import numpy as np
 import torchvision.transforms as transforms
 import cv2
-from utils.image_io import load_img_rgb, img_show
 from cv2box import CVImage
-from utils.ai_utils import MyTimer
-from model import BiSeNet
-import onnxruntime
+# from model import BiSeNet
+# import onnxruntime
 from model_convert.onnx_model import ONNXModel
 
 # MODEL_PATH = 'pretrain_models/face_parsing/79999_iter.onnx'
@@ -94,7 +92,7 @@ class FaceParsing:
         vis_parsing_anno_color = vis_parsing_anno_color.astype(np.uint8)
         vis_im = cv2.addWeighted(cv2.cvtColor(vis_im, cv2.COLOR_RGB2BGR), 0.4, vis_parsing_anno_color, 0.6, 0)
 
-        img_show(vis_im)
+        CVImage(vis_im).show()
 
 
 if __name__ == "__main__":
