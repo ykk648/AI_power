@@ -5,7 +5,7 @@
 
 # pip install pycryptodome
 from Crypto.Cipher import AES
-import operator  # 导入 operator，用于比较原始数据与加解密后的数据
+import operator
 import time
 
 AES_BLOCK_SIZE = AES.block_size  # AES 加密数据块大小, 只能是16
@@ -74,7 +74,7 @@ if __name__ == '__main__':
     pad_len = len(bytes) - len(bytes_ori)
     print(pad_len)
     decryptTest = decryptTest[:-pad_len]
-    print(len(decryptTest))
+    print('补齐长度：{} '.format(len(decryptTest)))
     if operator.eq(bytes_ori, decryptTest):  # 检查加解密是否成功
         print('AES 加解密成功！')
         with open(output_path, "wb") as fo:

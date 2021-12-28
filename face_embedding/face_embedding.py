@@ -8,6 +8,7 @@ from PIL import Image
 from torchvision import transforms
 import cv2
 import numpy as np
+from model_convert.onnx_model import ONNXModel
 
 
 def down_sample(target_, size):
@@ -18,23 +19,25 @@ def down_sample(target_, size):
 ARCFACE_MODEL_PATH = 'pretrain_models/face_embedding/ArcFace.tjm'
 # https://github.com/HuangYG123/CurricularFace
 CURRICULAR_MODEL_PATH = 'pretrain_models/face_embedding/CurricularFace.tjm'
+#
+W600K_MBF_PATH = 'pretrain_models/face_embedding/w600k_mbf.onnx'
 
 
 class FaceEmbedding:
     def __init__(self, model_type='arc', gpu_ids=None):
-        if model_type == 'arc':
+        self.model_type = model_type
+        if self.model_type == 'arc':
             self.facenet = torch.jit.load(ARCFACE_MODEL_PATH)
             self.transformer = transforms.Compose([
                 transforms.ToTensor(),
                 transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
             ])
-        elif model_type == 'cur':
+        elif self.model_type == 'cur':
             self.facenet = torch.jit.load(CURRICULAR_MODEL_PATH)
             self.transformer = transforms.Compose([
                 transforms.ToTensor(),
                 transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
             ])
-
         self.facenet.eval()
         if gpu_ids is not None and len(gpu_ids) > 0:
             self.gpu = True
@@ -62,20 +65,24 @@ class FaceEmbedding:
                 face = down_sample(face, size=[112, 112])
             # input: RGB 0-1  output: 512 embedding
             face_latent = self.facenet(face)
-            face_latent = F.normalize(face_latent, p=2, dim=1)
+            if self.model_type == 'cur':
+                face_latent = F.normalize(face_latent, p=2, dim=1)
 
         return face_latent[0]
 
 
 if __name__ == '__main__':
-    # CurricularFace
-    fb_cur = FaceEmbedding(model_type='cur', gpu_ids=[0])
-    latent_cur = fb_cur.latent_from_image('../test_img/fake_112.png')
-    print(latent_cur.shape)
-    print(latent_cur)
+    # # CurricularFace
+    # fb_cur = FaceEmbedding(model_type='cur', gpu_ids=[0])
+    # latent_cur = fb_cur.latent_from_image('test_img/croped_face/112.png')
+    # print(latent_cur.shape)
+    # print(latent_cur)
 
     # ArcFace
     fb_arc = FaceEmbedding(model_type='arc', gpu_ids=[0])
-    latent_arc = fb_arc.latent_from_image('../test_img/fake_112.png')
+    from cv2box import MyFpsCounter
+    with MyFpsCounter() as mfc:
+        for i in range(10):
+            latent_arc = fb_arc.latent_from_image('test_img/croped_face/112.png')
     print(latent_arc.shape)
     print(latent_arc)

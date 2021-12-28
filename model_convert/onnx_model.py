@@ -8,15 +8,21 @@ import onnxruntime
 
 
 class ONNXModel:
-    def __init__(self, onnx_path):
+    def __init__(self, onnx_path, debug=False):
         """
         :param onnx_path:
         """
-        self.onnx_session = onnxruntime.InferenceSession(onnx_path)
+        self.onnx_session = onnxruntime.InferenceSession(onnx_path, None, providers=["CUDAExecutionProvider"])
         self.input_name = self.get_input_name(self.onnx_session)
         self.output_name = self.get_output_name(self.onnx_session)
-        print("input_name:{}".format(self.input_name))
-        print("output_name:{}".format(self.output_name))
+
+        if debug:
+            input_cfg = self.onnx_session.get_inputs()[0]
+            input_shape = input_cfg.shape
+            self.input_size = tuple(input_shape[2:4][::-1])
+            print(self.input_size)
+            print("input_name:{}".format(self.input_name))
+            print("output_name:{}".format(self.output_name))
 
     def get_output_name(self, onnx_session):
         """
@@ -63,5 +69,6 @@ class ONNXModel:
         # 输入数据的类型必须与模型一致,以下三种写法都是可以的
         # scores, boxes = self.onnx_session.run(None, {self.input_name: image_tensor})
         # scores, boxes = self.onnx_session.run(self.output_name, input_feed={self.input_name: image_tensor})
+
         input_feed = self.get_input_feed(self.input_name, image_tensor)
         return self.onnx_session.run(self.output_name, input_feed=input_feed)
