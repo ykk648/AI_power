@@ -50,7 +50,7 @@ def gen_txt_from_path(base_path, img_format='jpg', train_ratio=0.8):
 """
 
 
-def gen_txt_from_json(base_path, train_ratio=0.8):
+def gen_txt_from_json(base_path, train_ratio=0.9):
     # multi label , labelme
     train_list = {}
     test_list = {}

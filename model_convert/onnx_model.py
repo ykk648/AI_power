@@ -5,6 +5,7 @@
 # -*-coding: utf-8 -*-
 
 import onnxruntime
+import numpy as np
 
 
 class ONNXModel:
@@ -12,7 +13,7 @@ class ONNXModel:
         """
         :param onnx_path:
         """
-        self.onnx_session = onnxruntime.InferenceSession(onnx_path, None, providers=["CUDAExecutionProvider"])
+        self.onnx_session = onnxruntime.InferenceSession(onnx_path, None, providers=["CUDAExecutionProvider"]) # CPUExecutionProvider
         self.input_name = self.get_input_name(self.onnx_session)
         self.output_name = self.get_output_name(self.onnx_session)
 
@@ -58,7 +59,7 @@ class ONNXModel:
             input_feed[name] = image_tensor
         return input_feed
 
-    def forward(self, image_tensor):
+    def forward(self, image_tensor, trans=False):
         '''
         image_tensor = image.transpose(2, 0, 1)
         image_tensor = image_tensor[np.newaxis, :]
@@ -69,6 +70,8 @@ class ONNXModel:
         # 输入数据的类型必须与模型一致,以下三种写法都是可以的
         # scores, boxes = self.onnx_session.run(None, {self.input_name: image_tensor})
         # scores, boxes = self.onnx_session.run(self.output_name, input_feed={self.input_name: image_tensor})
-
+        if trans:
+            image_tensor = image_tensor.transpose(2, 0, 1)
+            image_tensor = image_tensor[np.newaxis, :]
         input_feed = self.get_input_feed(self.input_name, image_tensor)
         return self.onnx_session.run(self.output_name, input_feed=input_feed)

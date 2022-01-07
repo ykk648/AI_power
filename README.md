@@ -30,10 +30,10 @@ All prtrain models can be accessed by BaiDuPan:
 - [GFPGAN](https://github.com/TencentARC/GFPGAN)
 - ESRGAN etc. TODO
 
-### Face Quality & Gender Classification
+### Face Attribution
 
-- based on [mmclassification](https://github.com/open-mmlab/mmclassification), follow [install guide](https://github.com/open-mmlab/mmclassification/blob/master/docs/install.md)
-- supply pretrained model trained by private dataset, mind the face should be aligned first
+- based on [mmclassification](https://github.com/open-mmlab/mmclassification), already convert to onnx.
+- supply pretrained model trained by private dataset, mind the face should be aligned first.
 
 
 ### Dataset Preprocess
