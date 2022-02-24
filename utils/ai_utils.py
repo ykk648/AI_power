@@ -5,7 +5,7 @@ import time
 import numpy as np
 import uuid
 from pathlib import Path
-
+import pickle
 
 def make_random_name(f_name):
     return uuid.uuid4().hex + '.' + f_name.split('.')[-1]
@@ -32,3 +32,18 @@ def get_path_by_ext(this_dir, ext_list=None):
         print('Use image ext as default !')
         ext_list = [".jpg", ".png", ".JPG", ".webp", ".jpeg"]
     return [p for p in Path(this_dir).rglob('*') if p.suffix in ext_list]
+
+
+def load_pkl(path):
+    """
+    Load pickle data.
+    Parameter
+    ---------
+    path: Path to pickle file.
+    Return
+    ------
+    Data in pickle file.
+    """
+    with open(path, 'rb') as f:
+        data = pickle.load(f)
+    return data

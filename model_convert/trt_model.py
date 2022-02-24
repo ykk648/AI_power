@@ -16,7 +16,6 @@ class TRTModel:
 
         self.trt_model_path = trt_model_path
 
-        # 加载换脸模型
         # import pycuda.driver as cuda
         # import pycuda.autoinit
         self.cfx = cuda.Device(0).make_context()
