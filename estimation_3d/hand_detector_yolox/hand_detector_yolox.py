@@ -11,7 +11,7 @@ MODEL_PATH = 'pretrain_models/digital_human/hand_detecotr_yolox/yolox_100DOH_epo
 
 
 class HandDetect:
-    def __init__(self, thres):
+    def __init__(self, thres=0.5):
         self.model = ONNXModel(MODEL_PATH, debug=False)
         self.thres = thres
 
