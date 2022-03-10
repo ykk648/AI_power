@@ -16,8 +16,13 @@ def torch2jit(model_, input_):
 
 
 def torch2onnx(model_, input_):
+    onnx_model_name = "alexnet.onnx"
     input_names = ["actual_input_1"]
     output_names = ["output1"]
-
-    torch.onnx.export(model_, input_, "alexnet.onnx", verbose=True, input_names=input_names,
-                      output_names=output_names)
+    opset_version = 13
+    dynamic_axes = None
+    # dynamic_axes = {'actual_input_1': [0, 2, 3], 'output1': [0, 1]}
+    torch.onnx.export(model_, input_, onnx_model_name, verbose=True, opset_version=opset_version,
+                      input_names=input_names,
+                      output_names=output_names, dynamic_axes=dynamic_axes)
+    raise 'convert done !'

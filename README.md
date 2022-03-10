@@ -4,6 +4,10 @@ All prtrain models can be accessed by BaiDuPan:
 
 [link](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
 
+### 3D Pose Estimation
+
+check [estimation_3d](https://github.com/ykk648/AI_power/tree/dev/estimation_3d)
+
 ### Face Detect & Align
 
 - ffhq align method

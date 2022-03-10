@@ -6,6 +6,7 @@
 
 import onnxruntime
 import numpy as np
+from cv2box import MyFpsCounter
 
 
 class ONNXModel:
@@ -13,7 +14,8 @@ class ONNXModel:
         """
         :param onnx_path:
         """
-        self.onnx_session = onnxruntime.InferenceSession(onnx_path, None, providers=["CUDAExecutionProvider"]) # CPUExecutionProvider
+        self.onnx_session = onnxruntime.InferenceSession(onnx_path, None,
+                                                         providers=["CUDAExecutionProvider"])  # CPUExecutionProvider
         self.input_name = self.get_input_name(self.onnx_session)
         self.output_name = self.get_output_name(self.onnx_session)
 
@@ -24,6 +26,20 @@ class ONNXModel:
             print(self.input_size)
             print("input_name:{}".format(self.input_name))
             print("output_name:{}".format(self.output_name))
+
+    def speed_test(self):
+        ort_inputs = {}
+        for node in self.onnx_session.get_inputs():
+            print(node.name, node.shape)
+            try:
+                # ort_inputs[node.name] = np.random.randn(1，3, 256, 256).astype(np.float32)
+                ort_inputs[node.name] = np.random.randn(*([1] + node.shape[1:])).astype(np.float32)
+            except TypeError:
+                raise 'Find dynamic input, name the input shape by yourself !'
+
+        with MyFpsCounter('onnx 1000 times') as mfc:
+            for i in range(1000):
+                _ = self.onnx_session.run(None, ort_inputs)
 
     def get_output_name(self, onnx_session):
         """
@@ -75,3 +91,7 @@ class ONNXModel:
             image_tensor = image_tensor[np.newaxis, :]
         input_feed = self.get_input_feed(self.input_name, image_tensor)
         return self.onnx_session.run(self.output_name, input_feed=input_feed)
+
+
+if __name__ == '__main__':
+    ox = ONNXModel('').speed_test()

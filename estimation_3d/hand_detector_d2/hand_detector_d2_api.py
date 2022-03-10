@@ -7,6 +7,7 @@ from detectron2.engine import DefaultPredictor
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from detectron2.utils.visualizer import Visualizer
 from cv2box import CVImage
+import numpy as np
 
 class ThirdViewDetector:
     """
@@ -23,14 +24,21 @@ class ThirdViewDetector:
         self.cfg = get_cfg()
         self.cfg.merge_from_file("pretrain_models/digital_human/hand_detector_d2/faster_rcnn_X_101_32x8d_FPN_3x_100DOH.yaml")
         self.cfg.MODEL.WEIGHTS = 'pretrain_models/digital_human/hand_detector_d2/model_0529999.pth'  # add model weight here
-        self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # 0.5 , use low thresh to increase recall
+        self.cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.3  # 0.5 , use low thresh to increase recall
         self.hand_detector = DefaultPredictor(self.cfg)
 
     def get_cfg(self):
         return self.cfg
 
-    def forward(self, img):
-        return self.hand_detector(img)
+    def forward(self, img, show=False):
+        results = self.hand_detector(img)
+        final_image = None
+        if show:
+            v = Visualizer(img[:, :, ::-1], MetadataCatalog.get("100DOH_hand_trainval"), scale=1.2)
+            v = v.draw_instance_predictions(results["instances"].to("cpu"))
+            final_image = v.get_image()[:, :, ::-1]
+            CVImage(final_image).show(1)
+        return results, final_image
 
     def get_hand_bbox(self, img):
         bbox_tensor = self.hand_detector(img)['instances'].pred_boxes
@@ -52,4 +60,5 @@ if __name__ == '__main__':
 
     # print
     print(outputs["instances"].pred_classes)
-    print(outputs["instances"].pred_boxes)
+    bboxs = np.array(outputs["instances"].pred_boxes.tensor.to('cpu'))
+    print(bboxs)
