@@ -6,7 +6,7 @@ import numpy as np
 from cv2box import CVImage
 from model_convert.onnx_model import ONNXModel
 
-MODEL_PATH = './pretrain_models/face_attr/face_attr_epoch_21_210106.onnx'
+MODEL_PATH = './pretrain_models/face_attr/face_attr_epoch_12_220318.onnx'
 
 
 class FaceAttr:

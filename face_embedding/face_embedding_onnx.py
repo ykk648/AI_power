@@ -4,7 +4,8 @@
 # @Project : https://github.com/ykk648/AI_power
 
 from cv2box import CVImage
-from cv2box.utils import np_norm, CalDistance
+from cv2box.utils.util import np_norm
+from cv2box.utils import CalDistance
 from model_convert.onnx_model import ONNXModel
 
 W600K_MBF_PATH = 'pretrain_models/face_embedding/w600k_mbf.onnx'
@@ -33,4 +34,4 @@ if __name__ == '__main__':
 
     print(latent_mbf_1.shape)
     print(latent_mbf_1)
-    print(CalDistance(latent_mbf_1, latent_mbf_2).sim())
+    print(CalDistance().sim(latent_mbf_1, latent_mbf_2))

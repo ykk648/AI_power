@@ -50,14 +50,14 @@ def gen_txt_from_path(base_path, img_format='jpg', train_ratio=0.8):
 """
 
 
-def gen_txt_from_json(base_path, train_ratio=0.9):
+def gen_txt_from_json(base_path, train_ratio=0.8):
     # multi label , labelme
     train_list = {}
     test_list = {}
 
     for img_path in get_path_by_ext(base_path):
         label = ''
-        img_path_str = str(img_path)[54:]
+        img_path_str = str(img_path)[70:]
         json_path = str(img_path.parent / (str(img_path.stem) + '.json'))
         # print(json_path)
         json_data = CVFile(json_path).data
@@ -94,3 +94,11 @@ def gen_txt_from_json(base_path, train_ratio=0.9):
 
 if __name__ == '__main__':
     gen_txt_from_json('')
+
+    # from tqdm import tqdm
+    # for img_path in tqdm(get_path_by_ext('')):
+    #     json_p = str(img_path).replace('.jpg', '.json')
+    #     if not Path(json_p).exists():
+    #         os.remove(str(img_path))
+    #         # raise '11'
+    #     # ef93c75f17c544ccbb436f5cfeb6e656.json
