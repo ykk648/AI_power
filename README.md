@@ -1,58 +1,34 @@
-## convenience API for your AI power
+## Convenience API for your AI power
 
-All prtrain models can be accessed by BaiDuPan:
+All pretrain models and conda env can be accessed by my share link:
 
-[link](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
+[BaiDuPan](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
 
-### 3D Pose Estimation
+### Mocap Libs
 
-check [estimation_3d](https://github.com/ykk648/AI_power/tree/dev/estimation_3d)
+Body & hand detector, hand mesh, visualize tools etc.
 
-### Face Detect & Align
+refer [mocap_lib](./mocap_lib)
 
-- ffhq align method
-- mtcnn from [mtcnn-pytorch](https://github.com/TropComplique/mtcnn-pytorch)
-- scrfd from [insightface](https://github.com/deepinsight/insightface/tree/master/detection/scrfd)
-- [face alignment](https://github.com/1adrianb/face-alignment) from 1adrianb
-- conform multi similarity align methods
+### Face Libs
 
+Face detect & align & parsing & embedding & 3D & restore etc.
 
-### Face Embedding
+refer [face_lib](./face_lib)
 
-- Arcface from [SimSwap](https://github.com/neuralchen/SimSwap) (mod to jit model)
-- [CurricularFace](https://github.com/HuangYG123/CurricularFace) (mod to jit model)
+### Model Libs
 
-### Face Parsing
+Onnx & tensorrt model template, model convert.
 
-- face parsing from [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch)
-- onnx and torch.jit speed compare `face_parsing/face_parsing_api.py`
+refer [model_lib](./model_lib)
 
-### Face Restore 
+### Install Notes
 
-- [Gpen](https://github.com/yangxy/GPEN)
-- [DFDNet](https://github.com/csxmli2016/DFDNet) (add batch parallel support)
-- [GFPGAN](https://github.com/TencentARC/GFPGAN)
-- ESRGAN etc. TODO
+Using pip/conda/gcc/... install the repo all u needs.
 
-### Face Attribution
+Mind the linux/python/cuda/cudnn/tensorrt/opencv/... versions and compatible.
 
-- based on [mmclassification](https://github.com/open-mmlab/mmclassification), already convert to onnx.
-- supply pretrained model trained by private dataset, mind the face should be aligned first.
-
-
-### Dataset Preprocess
-
-- count imgs mean & std
-- generate img names from dir to txt
-
-### Model Convert
-
-- torch2jit torch2onnx etc.
-- onnx2onnx-sim2tensorrt
-- onnx2tensorrt
-
-needs tensorrt onnx-simplifier
-
-`
+```shell
+# tensorrt
 pip install nvidia-tensorrt==8.* --index-url https://pypi.ngc.nvidia.com
-`
+```
