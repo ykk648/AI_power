@@ -6,12 +6,18 @@
 from .utils import GFPGANer
 from cv2box import CVImage
 
+
 class GFPGAN:
-    def __init__(self, use_gpu=True):
+    def __init__(self, use_gpu=True, version=2):
         self.gpu = use_gpu
 
+        if version == 2:
+            pretrain_model_path = 'pretrain_models/face_restore/gfpgan/GFPGANCleanv1-NoCE-C2.pth'
+        else:
+            pretrain_model_path = 'pretrain_models/face_restore/gfpgan/GFPGANv1.3.pth'
+
         self.model = GFPGANer(
-            model_path='pretrain_models/face_restore/gfpgan/GFPGANCleanv1-NoCE-C2.pth',
+            model_path=pretrain_model_path,
             upscale=2,
             arch='clean',
             channel_multiplier=2,

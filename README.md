@@ -29,6 +29,10 @@ Using pip/conda/gcc/... install the repo all u needs.
 Mind the linux/python/cuda/cudnn/tensorrt/opencv/... versions and compatible.
 
 ```shell
+# torch
+pip install torch==1.11+cu113 torchvision==0.12+cu113 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
+# pytorch3d
+pip install "git+https://github.com/facebookresearch/pytorch3d.git"
 # tensorrt
 pip install nvidia-tensorrt==8.* --index-url https://pypi.ngc.nvidia.com
 ```

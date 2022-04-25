@@ -3,13 +3,14 @@
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
 
-from cv2box.utils import flush_print
+from cv2box.utils.util import flush_print
 import torch
 import cv2
 import torch.nn.functional as F
 import numpy as np
 
-GPEN_MODEL_PATH = 'pretrain_models/face_restore/gpen/GPEN-512.pth'
+GPEN_MODEL_PATH = 'pretrain_models/face_restore/gpen/GPEN-BFR-512.pth'
+GPEN_2048_MODEL_PATH = 'pretrain_models/face_restore/gpen/GPEN-BFR-2048.pth'
 
 
 class GPEN:
@@ -17,8 +18,11 @@ class GPEN:
         flush_print('Start init Gpen model !')
         # op init costs time
         from face_lib.face_restore.gpen.face_gan import FaceGAN
-        self.gpen = FaceGAN(model_path=GPEN_MODEL_PATH, size=size,
-                            model='GPEN-512', channel_multiplier=2, use_gpu=use_gpu)
+        self.image_size = size
+        if self.image_size == 512:
+            self.gpen = FaceGAN(model_path=GPEN_MODEL_PATH, size=size, channel_multiplier=2, use_gpu=use_gpu)
+        else:
+            self.gpen = FaceGAN(model_path=GPEN_2048_MODEL_PATH, size=size, channel_multiplier=2, use_gpu=use_gpu)
         flush_print('Gpen model init done !')
 
     def forward(self, img_):
@@ -33,7 +37,7 @@ class GPEN:
                 # input_shape = img_.shape[-2:]
                 face_tensor = img_ * 2.0 - 1.0
                 face_tensor = face_tensor.unsqueeze(0)
-                face_tensor = F.interpolate(face_tensor, size=(512, 512))
+                face_tensor = F.interpolate(face_tensor, size=(self.image_size, self.image_size))
 
                 enhanced, _ = self.gpen.model(face_tensor)
 

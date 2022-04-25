@@ -5,7 +5,7 @@
 from PIL import Image
 import numpy as np
 import cv2
-from cv2box.utils import np_norm
+from cv2box.utils.util import np_norm
 from cv2box import CVImage
 
 from .scrfd_insightface import SCRFD

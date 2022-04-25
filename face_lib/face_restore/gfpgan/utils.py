@@ -1,13 +1,13 @@
 import cv2
 import os
 import torch
-from basicsr.utils import img2tensor, tensor2img
+from basicsr.utils import img2tensor, tensor2img  # pip install basicsr
 # from facexlib.utils.face_restoration_helper import FaceRestoreHelper
 from torch.hub import download_url_to_file, get_dir
 from torchvision.transforms.functional import normalize
 from urllib.parse import urlparse
 
-from .archs.gfpganv1_arch import GFPGANv1
+# from .archs.gfpganv1_arch import GFPGANv1
 from .archs.gfpganv1_clean_arch import GFPGANv1Clean
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -34,18 +34,18 @@ class GFPGANer():
                 different_w=True,
                 narrow=1,
                 sft_half=True)
-        else:
-            self.gfpgan = GFPGANv1(
-                out_size=512,
-                num_style_feat=512,
-                channel_multiplier=channel_multiplier,
-                decoder_load_path=None,
-                fix_decoder=True,
-                num_mlp=8,
-                input_is_latent=True,
-                different_w=True,
-                narrow=1,
-                sft_half=True)
+        # else:
+        #     self.gfpgan = GFPGANv1(
+        #         out_size=512,
+        #         num_style_feat=512,
+        #         channel_multiplier=channel_multiplier,
+        #         decoder_load_path=None,
+        #         fix_decoder=True,
+        #         num_mlp=8,
+        #         input_is_latent=True,
+        #         different_w=True,
+        #         narrow=1,
+        #         sft_half=True)
         # # # initialize face helper
         # self.face_helper = FaceRestoreHelper(
         #     upscale,
@@ -133,6 +133,7 @@ class GFPGANer():
 
         restored_face = restored_face.astype('uint8')
         return restored_face
+
 
 def load_file_from_url(url, model_dir=None, progress=True, file_name=None):
     """Ref:https://github.com/1adrianb/face-alignment/blob/master/face_alignment/utils.py

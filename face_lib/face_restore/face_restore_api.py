@@ -19,10 +19,14 @@ class FaceRestore:
         self.verbose = verbose
         if self.mode == 'gpen':
             self.fr = GPEN(size=512, use_gpu=self.use_gpu)
+        elif self.mode == 'gpen2048':
+            self.fr = GPEN(size=2048, use_gpu=self.use_gpu)
         elif self.mode == 'dfdnet':
             self.fr = DFDNet(use_gpu=self.use_gpu)
         elif self.mode == 'gfpgan':
-            self.fr = GFPGAN(use_gpu=self.use_gpu)
+            self.fr = GFPGAN(use_gpu=self.use_gpu, version=2)
+        elif self.mode == 'gfpganv3':
+            self.fr = GFPGAN(use_gpu=self.use_gpu, version=3)
 
     def forward(self, img_, output_size=256):
         """
@@ -32,9 +36,8 @@ class FaceRestore:
         Returns: cv2 BGR image
         """
         self.face_result = self.fr.forward(img_)
-        return cv2.resize(self.face_result, (output_size, output_size))
+        return cv2.resize(self.face_result, (output_size, output_size), interpolation=cv2.INTER_LINEAR)
 
     def save(self, img_save_p):
         CVImage(self.face_result).save(img_save_p)
         # img_save(self.face_result, img_save_p, self.verbose)
-

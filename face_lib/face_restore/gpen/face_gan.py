@@ -14,7 +14,7 @@ from .model import FullGenerator
 
 
 class FaceGAN(object):
-    def __init__(self, model_path, size=512, model=None, channel_multiplier=2, use_gpu=True):
+    def __init__(self, model_path, size=512,  channel_multiplier=2, use_gpu=True):
 
         self.mfile = model_path
         self.n_mlp = 8
