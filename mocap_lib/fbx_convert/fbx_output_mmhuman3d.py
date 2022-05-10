@@ -118,9 +118,9 @@ def process_pose(current_frame, pose, trans, pelvis_position):
     # Pelvis: X-Right, Y-Up, Z-Forward (Blender -Y)
 
     # Set absolute pelvis location relative to Pelvis bone head
-    bones[bone_name_from_index[0]].location = Vector((100 * trans[1], 100 * trans[2], 100 * trans[0])) - pelvis_position
+    bones[bone_name_from_index[0]].location = Vector((100 * trans[1], 100 * trans[2], 100 * trans[0])) #- pelvis_position
 
-    # bones['Root'].location = Vector(trans)
+    bones['f_avg_root'].location = Vector(trans)
     bones[bone_name_from_index[0]].keyframe_insert('location', frame=current_frame)
 
     for index, mat_rot in enumerate(mat_rots, 0):
@@ -131,11 +131,16 @@ def process_pose(current_frame, pose, trans, pelvis_position):
 
         bone_rotation = Matrix(mat_rot).to_quaternion()
         quat_x_90_cw = Quaternion((1.0, 0.0, 0.0), radians(-90))
+        quat_x_n135_cw = Quaternion((1.0, 0.0, 0.0), radians(-135))
+        quat_x_p45_cw = Quaternion((1.0, 0.0, 0.0), radians(45))
+        quat_y_90_cw = Quaternion((0.0, 1.0, 0.0), radians(-90))
         quat_z_90_cw = Quaternion((0.0, 0.0, 1.0), radians(-90))
+        quat_z_180_cw = Quaternion((0.0, 0.0, 1.0), radians(-180))
 
         if index == 0:
             # Rotate pelvis so that avatar stands upright and looks along negative Y avis
-            bone.rotation_quaternion = (quat_x_90_cw @ quat_z_90_cw) @ bone_rotation
+            # bone.rotation_quaternion = bone_rotation
+            bone.rotation_quaternion = (quat_x_90_cw @ quat_z_180_cw) @ bone_rotation
         else:
             bone.rotation_quaternion = bone_rotation
 
@@ -159,18 +164,20 @@ def process_poses(
 
     body_pose = file_data['smpl'][()]['body_pose']
     global_orient = file_data['smpl'][()]['global_orient'].reshape(-1, 1, 3)
+    pred_cams = file_data['pred_cams'].reshape(-1, 3)
     # keypoints_3d = file_data['keypoints_3d'][()]
 
     poses = []
-    # trans = []
+    trans = []
     for i in range(body_pose.shape[0]):
         poses.append(np.concatenate([global_orient[i], body_pose[i]], axis=0))
         # trans.append((keypoints_3d[i][8] + keypoints_3d[i][11])/2 * 5)
+        trans.append(pred_cams[i])
 
     poses = np.array(poses)
-    # trans = np.array(trans)
+    trans = np.array(trans)
 
-    trans = np.zeros((poses.shape[0], 3))
+    # trans = np.zeros((poses.shape[0], 3))
 
     if gender == 'female':
         model_path = female_model_path
@@ -257,8 +264,8 @@ def export_animated_mesh(output_path):
 if __name__ == '__main__':
     try:
 
-        input_path = '.../mmhuman3d/vis_results/output_result/vibe_origin_10s.npz'
-        output_path = './vibe_origin_10s.fbx'
+        input_path = '../vibe_origin_10s_kp3d.npz'
+        output_path = './test_trans4.fbx'
         fps_source = 30
         fps_target = 30
         gender = 'female'
