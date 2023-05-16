@@ -1,0 +1,22 @@
+common:
+  _type_: 'charuco'
+  size: [8, 8]
+  aruco_dict: '4X4_1000'
+  square_length: 0.07
+  marker_length: 0.056
+
+  min_rows: 1
+  min_points: 6
+
+boards:
+  charuco_A1_0:
+    aruco_offset: 0
+
+
+#aruco_params:
+#  adaptiveThreshWinSizeMin: 3
+#  adaptiveThreshWinSizeMax: 23
+#  adaptiveThreshWinSizeStep: 1
+#  minMarkerPerimeterRate: 0.01
+#  maxMarkerPerimeterRate: 4.0
+#  perspectiveRemovePixelPerCell: 1
