@@ -45,7 +45,7 @@ class HifiFace(ModelBase):
     def forward(self, src_face_image, dst_face_latent):
         """
         Args:
-            src_face_image:
+            src_face_image: RGB
             dst_face_latent: [1, 512]
         Returns:
         """

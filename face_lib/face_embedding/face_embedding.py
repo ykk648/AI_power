@@ -53,6 +53,11 @@ class FaceEmbedding(ModelBase):
             self.input_size = (112, 112)
 
     def forward(self, face_image):
+        """
+        Args:
+            face_image: CVImage acceptable type
+        Returns: (512,) or torch.Size([512]) (tjm)
+        """
         if self.model_type.find('tjm') > 0:
             face_image = CVImage(face_image).rgb()
             face = self.transformer(face_image)
@@ -66,28 +71,31 @@ class FaceEmbedding(ModelBase):
             return face_latent[0]
         else:
             face = CVImage(face_image).blob(self.input_size, self.input_std, self.input_mean, rgb=True)
+            # for batch
+            # return Normalize(self.model.forward(face)[0]).batch_norm()
             return Normalize(self.model.forward(face)[0].ravel()).np_norm()
 
 
 if __name__ == '__main__':
     # CurricularFace
-    fb_cur = FaceEmbedding(model_type='CurricularFace_tjm', provider='gpu')
+    fb_cur = FaceEmbedding(model_type='CurricularFace', provider='gpu')
     latent_cur = fb_cur.forward('resource/cropped_face/112.png')
     print(latent_cur.shape)
-    print(latent_cur)
+    # print(latent_cur)
 
     # # ArcFace
-    # fe = FaceEmbedding(model_type='arcface', gpu_ids=[0])
+    # fe = FaceEmbedding(model_type='arcface_tjm', provider='gpu')
     # with MyFpsCounter() as mfc:
     #     for i in range(10):
-    #         latent_arc = fe.tjm_forward('test_img/croped_face/112.png')
+    #         latent_arc = fe.forward('resource/cropped_face/112.png')
     # print(latent_arc.shape)
     # print(latent_arc)
 
-    # # ArcFace MBF
+    # # insightface MBF
     # fe = FaceEmbedding(model_type='insightface_mbf')
-    # latent_mbf_1 = fe.onnx_forward('test_img/croped_face/112.png')
-    # latent_mbf_2 = fe.onnx_forward('test_img/croped_face/112.png')
+    # latent_mbf_1 = fe.forward('resource/cropped_face/112.png')
+    # latent_mbf_2 = fe.forward('resource/cropped_face/112.png')
     # print(latent_mbf_1.shape)
     # print(latent_mbf_1)
+    # from cv2box.utils.math import CalDistance
     # print(CalDistance().sim(latent_mbf_1, latent_mbf_2))
