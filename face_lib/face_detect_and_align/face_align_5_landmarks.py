@@ -7,7 +7,7 @@ from PIL import Image
 import numpy as np
 import cv2
 from cv2box.utils.math import Normalize
-from cv2box import CVImage
+from cv2box import CVImage, CVBbox
 
 from .scrfd_insightface import SCRFD
 from .mtcnn_pytorch import MTCNN
@@ -21,11 +21,12 @@ MTCNN_MODEL_PATH = 'pretrain_models/face_lib/face_detect/mtcnn_weights/'
 
 
 class FaceDetect5Landmarks:
-    def __init__(self, mode='scrfd_500m', tracking=False):
+    def __init__(self, mode='scrfd_500m', tracking=False, tracking_ratio=0.5):
         self.mode = mode
         self.tracking = tracking
+        self.tracking_ratio = tracking_ratio
         self.dis_list = []
-        self.last_bboxes_ = []
+        self.last_bboxes_ = None
         assert self.mode in ['scrfd', 'scrfd_500m', 'mtcnn']
         self.bboxes = self.kpss = self.image = None
         if 'scrfd' in self.mode:
@@ -51,11 +52,10 @@ class FaceDetect5Landmarks:
         self.image = CVImage(image).rgb()
 
         if self.tracking:
-            if len(self.last_bboxes_) == 0:
+            if self.last_bboxes_ is None:
                 self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(image, thresh=nms_thresh, max_num=1,
                                                                            metric='default')
                 self.last_bboxes_ = self.bboxes
-                # return self.bboxes, self.kpss
             else:
                 self.bboxes, self.kpss = self.det_model_scrfd.detect_faces(image, thresh=nms_thresh, max_num=0,
                                                                            metric='default')
@@ -71,17 +71,23 @@ class FaceDetect5Landmarks:
                 self.bboxes, self.kpss = self.det_model_mtcnn.detect_faces(pil_image, min_face_size=min_bbox_size,
                                                                            thresholds=[0.6, 0.7, 0.8],
                                                                            nms_thresholds=[0.7, 0.7, 0.7])
-            return self.bboxes, self.kpss
+        return self.bboxes, self.kpss
 
     def tracking_filter(self):
+        if len(self.bboxes) == 0 or len(self.last_bboxes_) == 0:
+            return None, None
         for i in range(len(self.bboxes)):
-            self.dis_list.append(np.linalg.norm(Normalize(self.bboxes[i]).np_norm() - Normalize(self.last_bboxes_[0]).np_norm()))
+            self.dis_list.append(
+                np.linalg.norm(Normalize(self.bboxes[i]).np_norm() - Normalize(self.last_bboxes_[0]).np_norm()))
         if not self.dis_list:
-            return [], []
+            return None, None
         best_index = np.argmin(np.array(self.dis_list))
+        # print(self.dis_list[best_index])
+        if self.dis_list[best_index] > self.tracking_ratio:
+            return None, None
         self.dis_list = []
-        self.last_bboxes_ = [self.bboxes[best_index]]
-        return self.last_bboxes_, [self.kpss[best_index]]
+        self.last_bboxes_ = np.array([self.bboxes[best_index]])
+        return self.last_bboxes_, np.array([self.kpss[best_index]])
 
     def bboxes_filter(self, min_bbox_size):
         min_area = np.power(min_bbox_size, 2)
@@ -95,7 +101,7 @@ class FaceDetect5Landmarks:
         Args:
             crop_size:
             mode: default mtcnn_512 arcface_512 arcface default_95
-            only_roi: for talking head, don't do align
+            only_roi: for talking head, don't do warpAffine
         Returns: cv2 image
         """
         assert mode in ['default', 'mtcnn_512', 'mtcnn_256', 'arcface_512', 'arcface', 'default_95']
@@ -103,15 +109,18 @@ class FaceDetect5Landmarks:
             return None, None
         det_score = self.bboxes[..., 4]
         if self.tracking:
-            best_index = np.argmax(np.array(self.dis_list))
+            best_index = 0
             kpss = None
             if self.kpss is not None:
                 kpss = self.kpss[best_index]
         else:
-            best_index = np.argmax(det_score)
+            # area center mode
+            bbox_filtered_result = CVBbox(self.bboxes).area_center_filter(self.image.shape, max_num=1)
+            best_index = bbox_filtered_result[0][1]
             kpss = None
             if self.kpss is not None:
                 kpss = self.kpss[best_index]
+
         if only_roi:
             roi, roi_box, roi_kpss = apply_roi_func(self.image, self.bboxes[best_index], kpss, pad_ratio=pad_ratio)
             roi = CVImage(roi).resize_keep_ratio(crop_size)[0]
@@ -127,25 +136,34 @@ class FaceDetect5Landmarks:
             align_img = cv2.cvtColor(align_img, cv2.COLOR_RGB2BGR)
             return align_img, mat_rev
 
-    def get_multi_face(self, crop_size, mode='mtcnn_512'):
+    def get_multi_face(self, crop_size, mode='mtcnn_512', apply_roi=False, pad_ratio=0):
         """
         Args:
             crop_size:
             mode: default mtcnn_512 arcface_512 arcface
+            apply_roi:
+            pad_ratio:
         Returns:
         """
+        assert mode in ['default', 'mtcnn_512', 'mtcnn_256', 'arcface_512', 'arcface', 'default_95']
         if self.bboxes.shape[0] == 0:
-            return None
+            return None, None, None
         align_img_list = []
-        M_list = []
+        mat_rev_list = []
+        roi_box_list = []
         for i in range(self.bboxes.shape[0]):
-            kps = None
             if self.kpss is not None:
-                kps = self.kpss[i]
-            align_img, M = norm_crop(self.image, kps, crop_size, mode=mode)
-            align_img_list.append(align_img)
-            M_list.append(M)
-        return align_img_list, M_list
+                if apply_roi:
+                    roi, roi_box, roi_kpss = apply_roi_func(self.image, self.bboxes[i], self.kpss[i],
+                                                            pad_ratio=pad_ratio)
+                    align_img, mat_rev = norm_crop(roi, roi_kpss, crop_size, mode=mode)
+                else:
+                    align_img, mat_rev = norm_crop(self.image, self.kpss[i], crop_size, mode=mode)
+                align_img = cv2.cvtColor(align_img, cv2.COLOR_RGB2BGR)
+                align_img_list.append(align_img)
+                mat_rev_list.append(mat_rev)
+                roi_box_list.append(roi_box)
+        return align_img_list, mat_rev_list, roi_box_list
 
     def draw_face(self):
         for i_ in range(self.bboxes.shape[0]):

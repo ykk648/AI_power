@@ -24,7 +24,7 @@ class FaceSwapPipe:
         # self.fd.draw_face()
         # # print(bboxes_scrfd)
         # face_image, m_ = self.fd.get_single_face(crop_size=512, mode='mtcnn_512')  # mtcnn_512 arcface_512 arcface
-        face_image_, mat_rev_, roi_box_ = self.fd.get_single_face(crop_size=256, mode='mtcnn_256', apply_roi=True)  # mtcnn_512 arcface_512 arcface
+        face_image_, mat_rev_, roi_box_ = self.fd.get_single_face(crop_size=256, mode='mtcnn_256', apply_roi=True)
         # if face_image is not None:
         if self.show:
             CVImage(face_image_).show(0)
