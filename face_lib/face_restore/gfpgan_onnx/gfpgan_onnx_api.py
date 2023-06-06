@@ -14,6 +14,19 @@ MODEL_ZOO = {
     },
 }
 
+# import torch
+# import ctypes
+#
+# def create_tensor_from_ptr(ptr, shape, dtype):
+#     n_elems = int(torch.tensor(shape).prod())
+#     buffer = ctypes.c_void_p(ptr)
+#     storage = torch.Storage.from_buffer(buffer)
+#     tensor = torch.tensor([], dtype=dtype)  # 先创建一个空 Tensor 对象
+#     tensor.set_(source=storage,
+#                 storage_offset=0,
+#                 size=shape,
+#                 stride=None)
+#     return tensor
 
 class GFPGAN(ModelBase):
     def __init__(self, model_type='GFPGANv1.4', provider='gpu'):
@@ -21,6 +34,14 @@ class GFPGAN(ModelBase):
         self.model_type = model_type
         self.input_std = self.input_mean = 127.5
         self.input_size = (512, 512)
+
+    # def cuda_forward(self, face_image_tensor):
+    #     # image_out = self.model.cuda_binding_forward([face_image_tensor])[0].numpy()
+    #     image_out = self.model.cuda_binding_forward([face_image_tensor])[0]
+    #     output_face = create_tensor_from_ptr(image_out.data_ptr(), image_out.shape(), torch.float)
+    #
+    #     # output_face = ((image_out[0] + 1) / 2)[::-1].transpose(1, 2, 0).clip(0, 1)
+    #     return output_face
 
     def forward(self, face_image):
         """
@@ -38,8 +59,18 @@ class GFPGAN(ModelBase):
 if __name__ == '__main__':
     face_img_p = 'resource/cropped_face/512.jpg'
     fa = GFPGAN(model_type='GFPGANv1.4', provider='gpu')
+
     with MyFpsCounter() as mfc:
         for i in range(10):
             face = fa.forward(face_img_p)
     # CVImage(face, image_format='cv2').save('./gfpgan.jpg')
     CVImage(face, image_format='cv2').show()
+
+    # # cuda forward test
+    # import onnxruntime
+    # import torch
+    # face_image_tensor_ = CVImage(face_img_p).blob(fa.input_size, fa.input_mean, fa.input_std, rgb=True)
+    # # face_image_tensor_ = onnxruntime.OrtValue.ortvalue_from_numpy(face_image_tensor_, 'cuda', 0)
+    # face_image_tensor_ = torch.tensor(face_image_tensor_).cuda()
+    # output_face = fa.cuda_forward(face_image_tensor_)
+    # CVImage(output_face, image_format='cv2').show()

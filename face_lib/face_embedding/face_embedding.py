@@ -70,7 +70,7 @@ class FaceEmbedding(ModelBase):
                 face_latent = F.normalize(face_latent, p=2, dim=1)
             return face_latent[0]
         else:
-            face = CVImage(face_image).blob(self.input_size, self.input_std, self.input_mean, rgb=True)
+            face = CVImage(face_image).blob(self.input_size, self.input_mean, self.input_std, rgb=True)
             # for batch
             # return Normalize(self.model.forward(face)[0]).batch_norm()
             return Normalize(self.model.forward(face)[0].ravel()).np_norm()

@@ -166,6 +166,7 @@ class FaceDetect5Landmarks:
         return align_img_list, mat_rev_list, roi_box_list
 
     def draw_face(self):
+        self.image = CVImage(self.image).rgb()
         for i_ in range(self.bboxes.shape[0]):
             bbox = self.bboxes[i_]
             x1, y1, x2, y2, score = bbox.astype(int)
