@@ -22,6 +22,6 @@ image = Image.open(img_path).convert('RGB')
 boxes = [line[0] for line in result]
 txts = [line[1][0] for line in result]
 scores = [line[1][1] for line in result]
-im_show = draw_ocr(image, boxes, txts, scores, font_path='./simfang.ttf')
+im_show = draw_ocr(image, boxes, txts, scores, font_path='./pretrain_models/ocr_lib/simfang.ttf')
 im_show = Image.fromarray(im_show)
-im_show.save('result.jpg')
+im_show.save('result2.jpg')

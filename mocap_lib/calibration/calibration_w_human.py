@@ -2,6 +2,9 @@
 # @Time : 2022/9/5
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
+"""
+using human keypoints instead of charuco boards to do calibration
+"""
 import numpy as np
 from cv2box import CVFile, CVCamera
 import cv2
@@ -20,12 +23,12 @@ all_kps = []
 used_kps_index = [1, 9, 12, 10, 13, 11, 14]
 cameras = []
 cvc = CVCamera(
-    multical_pkl_path='/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0809cal/front_4_0809_window_1080.pkl')
+    multical_pkl_path='./0809cal/front_4_0809_window_1080.pkl')
 for camera_name in ['268', '617', '728', '886']:
-    kp_p = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0906_pm/stand1/{}_2dkp.pkl'.format(camera_name)
+    kp_p = './0906_pm/stand1/{}_2dkp.pkl'.format(camera_name)
     kps = CVFile(kp_p).data[frame][used_kps_index, :2]
 
-    kp_p_2 = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0906_pm/walk2/{}_2dkp.pkl'.format(
+    kp_p_2 = './0906_pm/walk2/{}_2dkp.pkl'.format(
         camera_name)
     all_kps.append(CVFile(kp_p_2).data)
 
@@ -42,4 +45,4 @@ for camera_name in ['268', '617', '728', '886']:
 cvc_empty = CVCamera()
 cvc_empty.camera_group = aniposelib.cameras.CameraGroup(cameras)
 final_camera_group = cvc_empty.bundle_adjust_iter(np.array(all_kps))
-CVFile('/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0906_pm/cgroup_from_human.pkl').pickle_write(final_camera_group)
+CVFile('./0906_pm/cgroup_from_human.pkl').pickle_write(final_camera_group)
