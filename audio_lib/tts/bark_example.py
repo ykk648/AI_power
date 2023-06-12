@@ -2,7 +2,9 @@
 # @Time : 2023/4/27
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
-
+"""
+https://github.com/suno-ai/bark
+"""
 from bark import SAMPLE_RATE, generate_audio, preload_models
 from IPython.display import Audio
 

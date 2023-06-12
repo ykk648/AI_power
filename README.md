@@ -17,10 +17,13 @@ more details refer [face_lib](./face_lib)
 <details open>
 <summary>(click to collapse)</summary>
 
+- [x] [EyeOpenDetect](https://github.com/abhilb/Open-eye-closed-eye-classification) (eye close detect)
+- [x] [IrisLandmark](https://github.com/Kazuhito00/iris-detection-using-py-mediapipe) 
 - [x] [Deep3DFace](https://github.com/microsoft/Deep3DFaceReconstruction) (face 3d)
 - [x] [*MobileNetV3](https://github.com/open-mmlab/mmclassification/tree/master/configs/mobilenet_v3) (face attitrbute) 
 - [x] [MTCNN](https://github.com/taotaonice/FaceShifter/blob/master/face_modules/mtcnn.py) (face detect)
 - [x] [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment)
+- [x] [S3FD](https://github.com/iperov/DeepFaceLive/blob/master/modelhub/onnx/S3FD/S3FD.py)
 - [x] [SCRFD](https://github.com/deepinsight/insightface/tree/master/detection/scrfd) 
 - [x] [ArcFace](https://github.com/neuralchen/SimSwap/blob/01a8d6d0a6fd7e7b0052a5832328fba33f2b8414/models/fs_model.py#L63) (face embedding)
 - [x] [CurricularFace](https://github.com/HuangYG123/CurricularFace)
@@ -31,6 +34,8 @@ more details refer [face_lib](./face_lib)
 - [x] [GPEN](https://github.com/yangxy/GPEN) (face restore)
 - [x] [DFDNet](https://github.com/csxmli2016/DFDNet) 
 - [x] [GFPGAN](https://github.com/TencentARC/GFPGAN) 
+- [x] [RestoreFormer](https://github.com/wzhouxiff/RestoreFormer) 
+- [x] [CodeFormer](https://github.com/sczhou/CodeFormer) 
 - [x] [*HifiFace](https://johann.wang/HifiFace/) (face swap)
 
 
@@ -89,6 +94,7 @@ more details refer [seg_lib](./seg_lib)
 <summary>(click to collapse)</summary>
 
 - [x] [u2net](https://github.com/danielgatis/rembg) (object segmentation) 
+- [x] [ppmattingv2](https://github.com/jiachen0212/pp_mattingv2)
 
 
 Supported AIGC related models&methods:
@@ -98,9 +104,43 @@ more details refer [art_lib](./seg_lib)
 <details open>
 <summary>(click to collapse)</summary>
 
-- [x] [DCTNet](https://www.modelscope.cn/models/damo/cv_unet_person-image-cartoon_compound-models/summary) (pix2pix) 
+- [x] [DCTNet](https://www.modelscope.cn/models/damo/cv_unet_person-image-cartoon_compound-models/summary) (style transfer) 
+- [x] [TPSMM](https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model) (talking head) 
 
 
+Supported GPT related models&methods:
+
+more details refer [gpt_lib](./seg_lib)
+
+<details open>
+<summary>(click to collapse)</summary>
+
+- [x] [ChatGLM6B finetune](https://github.com/mymusise/ChatGLM-Tuning)
+- [x] [OPENAI API]()
+- [x] [langchain]()
+- [x] [lora finetune]()
+- [x] [text splitter](https://www.modelscope.cn/models/damo/nlp_bert_document-segmentation_chinese-base/summary)
+
+
+Supported audio related models&methods:
+
+more details refer [audio_lib](./audio_lib)
+
+<details open>
+<summary>(click to collapse)</summary>
+
+- [x] [sovits](https://github.com/voicepaw/so-vits-svc-fork) (svc) 
+- [x] [bark](https://github.com/suno-ai/bark) (tts) 
+
+
+Supported OCR related models&methods:
+
+more details refer [ocr_lib](./audio_lib)
+
+<details open>
+<summary>(click to collapse)</summary>
+
+- [x] [paddleocr](https://github.com/PaddlePaddle/PaddleOCR) 
 
 ### Projects of mine
 
