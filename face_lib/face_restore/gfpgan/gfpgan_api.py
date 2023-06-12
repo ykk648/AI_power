@@ -2,6 +2,11 @@
 # @Time : 2021/11/23
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
+"""
+https://github.com/TencentARC/GFPGAN
+https://github.com/sczhou/CodeFormer
+https://github.com/wzhouxiff/RestoreFormer
+"""
 
 from .gfpgan_utils import GFPGANer
 from cv2box import CVImage

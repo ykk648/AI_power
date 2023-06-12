@@ -2,6 +2,9 @@
 # @Time : 2023/5/23
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
+"""
+https://github.com/PaddlePaddle/PaddleOCR
+"""
 from paddleocr import PaddleOCR, draw_ocr
 
 # Paddleocr目前支持的多语言语种可以通过修改lang参数进行切换

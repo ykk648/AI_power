@@ -3,7 +3,7 @@
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
 """
-
+https://github.com/voicepaw/so-vits-svc-fork
 svc infer -c logs/44k/config.json -m logs/44k/G_2400.pth "*.wav"
 """
 
