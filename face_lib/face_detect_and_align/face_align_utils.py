@@ -57,6 +57,7 @@ mtcnn_256 = np.array(mtcnn_512) * 0.5
 arcface_src_512 = arcface_src * np.array([512 / 112, 512 / 112])
 arcface_src = np.expand_dims(arcface_src, axis=0)
 
+arcface_src_224 = arcface_src * 2
 
 def get_src_modify(srcs, arcface_src):
     srcs += ((arcface_src[2] - srcs[2][2]) * np.array([1, 1.8]))[None]
@@ -74,6 +75,10 @@ def estimate_norm(lmk, image_size=112, mode='arcface'):
     if mode == 'arcface':
         assert image_size == 112
         src = arcface_src
+    elif mode == 'arcface_224':
+        # for Deep3DFaceRecon
+        assert image_size == 224
+        src = arcface_src_224
     elif mode == 'arcface_512':
         src = np.expand_dims(arcface_src_512, axis=0)
     elif mode == 'mtcnn_512':
