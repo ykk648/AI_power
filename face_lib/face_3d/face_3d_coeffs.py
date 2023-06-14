@@ -1,36 +1,43 @@
-import torch
-import cv2
-import numpy as np
-from PIL import Image
-
-from .Deep3DFace import define_f3d
-from utils.ai_utils import down_sample
 from cv2box import CVImage
+from apstone import ModelBase
+
+"""
+'identity':    [80,]   # 身份系数
+'expression':  [64,]   # 表情系数
+'texture':     [80,]   # 纹理系数
+'rotation':    [3,]    # 旋转系数
+'gamma':       [27,]   # 亮度系数
+'translation': [3,]    # 平移系数
+"""
+
+MODEL_ZOO = {
+    # https://github.com/sicxu/Deep3DFaceRecon_pytorch
+    # input_name: ['input_1'], shape: [[1, 3, 224, 224]]
+    # output_name: ['output_1'], shape: [[1, 257]]
+    'facerecon_230425': {
+        'model_path': 'pretrain_models/face_lib/face_3d/epoch_20_facerecon_230425.onnx'
+    },
+}
 
 
-class Face3dCoeffs:
-    def __init__(self, opt=None, gpu_ids=None):
-        self.opt = opt
-        # 输入224 RGB
-        self.f3d_input = 224
-        self.f3d = define_f3d(self.opt, gpu_ids=gpu_ids)
-        if gpu_ids is not None and len(gpu_ids) > 0:
-            self.gpu = True
-        else:
-            self.gpu = False
+class Face3dCoeffs(ModelBase):
+    def __init__(self, model_type='facerecon_230425', provider='gpu'):
+        super().__init__(MODEL_ZOO[model_type], provider)
+        self.input_size = (224, 224)
+        self.input_std = self.input_mean = 127.5
 
-    def coeffs_from_image(self, face_image):
+    def forward(self, face_image):
+        """
+        Args:
+            face_image: CVImage acceptable class, 5 landmark align with 'arcface_224'
+        Returns: coeffs of face reconstruction
+        """
         face_image = CVImage(face_image).rgb()
+        face = CVImage(face_image).blob(self.input_size, self.input_mean, self.input_std, rgb=True)
+        return self.model.forward(face)[0]
 
-        if type(face_image) in [np.ndarray, str, Image.Image]:
-            face_image = np.array(face_image) / 255.0
-            face_image = torch.tensor(face_image, dtype=torch.float32)
-            face_image = face_image.permute(2, 0, 1).unsqueeze(0)
-        elif type(face_image) == torch.Tensor:
-            pass
 
-        if self.gpu:
-            face_image = face_image.cuda()
-
-        coeffs = self.f3d.compute_coeff((down_sample(face_image, size=self.f3d_input) + 1) / 2)
-        return coeffs[0]
+if __name__ == '__main__':
+    f3c = Face3dCoeffs(model_type='facerecon_230425', provider='gpu')
+    coeffs = f3c.forward('resource/cropped_face/112.png')
+    print(coeffs.shape)
