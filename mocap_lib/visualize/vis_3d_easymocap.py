@@ -154,7 +154,7 @@ def render_animation(kintree, poses, output=None, fps=30, bitrate=0, azim=-45, e
 
 if __name__ == '__main__':
     from cv2box import CVFile
-    input_path = '/workspace/codes/hrnet48_realtime/results/3d_kp'
+    input_path = '/results/3d_kp'
     output_path = './cache/3d_vis/result.mp4'
 
     kp3ds = []

@@ -65,8 +65,8 @@ def concat_2_json(json_in_1, json_in_2, json_out_):
 
 
 if __name__ == '__main__':
-    json_in = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/datasets_TVCOCO_hand_train/annotations/train.json'
-    json_out = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/datasets_TVCOCO_hand_train/annotations/train_out.json'
+    json_in = '/datasets_TVCOCO_hand_train/annotations/train.json'
+    json_out = '/datasets_TVCOCO_hand_train/annotations/train_out.json'
     del_other_category(json_in, json_out)
 
     # json_in = ''

@@ -60,19 +60,26 @@ class U2netClothSeg(ModelBase):
         upper_body_mask[np.where(upper_body_mask == 1)] = 255
 
         lower_body_mask = pred_mask.copy()
-        lower_body_mask[np.where(lower_body_mask != 3)] = 0
-        lower_body_mask[np.where(lower_body_mask == 3)] = 255
+        lower_body_mask[np.where(lower_body_mask != 2)] = 0
+        lower_body_mask[np.where(lower_body_mask == 2)] = 255
 
-        # full_body_mask = pred_mask.copy()
-        # full_body_mask[np.where(full_body_mask != 2)] = 0
-        # full_body_mask[np.where(full_body_mask == 2)] = 255
+        full_body_mask = pred_mask.copy()
+        full_body_mask[np.where(full_body_mask != 3)] = 0
+        full_body_mask[np.where(full_body_mask == 3)] = 255
 
-        return [upper_body_mask, lower_body_mask]
+        return [upper_body_mask, lower_body_mask, full_body_mask]
 
 
 if __name__ == '__main__':
     fb_cur = U2netClothSeg(model_type='u2net_cloth_seg', provider='gpu')
-    mask = fb_cur.forward('resource/for_pose/yoga2.jpg', post_process=False)
+    mask = fb_cur.forward('', post_process=False)
     CVImage(mask[0]).show()
     CVImage(mask[1]).show()
+    CVImage(mask[2]).show()
 
+    combined_mask = np.maximum(mask[0], mask[1])
+    # # reverse
+    # combined_mask[np.where(combined_mask == 255)] = 233
+    # combined_mask[np.where(combined_mask == 0)] = 255
+    # combined_mask[np.where(combined_mask == 233)] = 0
+    CVImage(combined_mask).save('')

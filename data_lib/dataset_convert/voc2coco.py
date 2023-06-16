@@ -18,12 +18,12 @@ import xml.etree.ElementTree as ET
 """
 val_files_num = 0
 test_files_num = 0
-voc_annotations = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/100DOH_handobj_VOCdevkit2007_100k/VOC2007/Annotations'  # voc的annotations路径
+voc_annotations = '/100DOH_handobj_VOCdevkit2007_100k/VOC2007/Annotations'  # voc的annotations路径
 
 split = voc_annotations.split('/')
 coco_name = 'VOC2007'
 
-main_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/100DOH_handobj_VOCdevkit2007_100k/'
+main_path = '/100DOH_handobj_VOCdevkit2007_100k/'
 
 # print(main_path)
 

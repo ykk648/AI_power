@@ -16,7 +16,7 @@ MODEL_ZOO = {
         'label': 1,
     },
     'yolox_s_local': {
-        'model_path': '/workspace/codes/private/AI_power/private_models/hand_lib/hand_detector_yolox/yolox_s_2dataset_epoch127_0922_dynamic.onnx',
+        'model_path': 'private_models/hand_lib/hand_detector_yolox/yolox_s_2dataset_epoch127_0922_dynamic.onnx',
         'input_dynamic_shape': (1, 3, 640, 640),
         'model_input_size': (640, 640),
         'label': 0,
@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     # # video detect and show
     # hd = HandDetectorYolox(model='yolox_s_local', threshold=0.5)
-    # with CVVideoLoader('/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0921/hand_1/003.mp4') as cvvl:
+    # with CVVideoLoader('') as cvvl:
     #     for _ in tqdm(range(len(cvvl))):
     #         _, img = cvvl.get()
     #         hd_result = hd.forward(img, show=True)
@@ -66,7 +66,7 @@ if __name__ == '__main__':
     # video detect and show to video
     hd = HandDetectorYolox(model='yolox_s_local', threshold=0.5)
     count = 0
-    with CVVideoLoader('/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0921/hand_1/003.mp4') as cvvl:
+    with CVVideoLoader('') as cvvl:
         for _ in tqdm(range(len(cvvl))):
             _, img = cvvl.get()
             hd_result = hd.forward(img, show=False)

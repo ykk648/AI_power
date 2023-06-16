@@ -83,15 +83,9 @@ class BodyDetector:
 
 
 if __name__ == '__main__':
-    # image_path = 'resource/t_pose_1500x.jpeg'
     image_path = 'resource/yoga2.webp'
-    # image_path = 'resource/girl_640x480.jpg'
-    # image_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0707_women_dance/0/00000035.jpg'
-    # image_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0707_women_dance/0/resize.jpg'
     image_in = CVImage(image_path).bgr
-
     pd = BodyDetector(provider='gpu')
-
     filtered_detections = pd.forward(image_in, show=True)
 
     # with MyFpsCounter('model forward 10 times fps: ') as mfc:

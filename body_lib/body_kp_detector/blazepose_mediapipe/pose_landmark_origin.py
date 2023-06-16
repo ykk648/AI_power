@@ -59,11 +59,7 @@ class LandmarkDetectorOrigin:
 
 
 if __name__ == '__main__':
-    # image_path = 'resource/for_pose/t_pose_1500x.jpeg'
     image_path = 'resource/for_pose/girl_640x480.jpg'
-    # image_path = 'resource/yoga1.webp'
-    # image_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0707_women_dance/0/00000035.jpg'
-    # image_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0707_women_dance/0/resize.jpg'
     image_in = CVImage(image_path).bgr
 
     """
@@ -83,8 +79,7 @@ if __name__ == '__main__':
 
     # video tracking test
     from cv2box import CVVideoLoader
-
-    with CVVideoLoader('/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0802/hand1/videos/268.mp4') as cvvl:
+    with CVVideoLoader('') as cvvl:
         for _ in range(len(cvvl)):
             _, frame = cvvl.get()
             landmarks = ld.forward(frame, show=True)

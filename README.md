@@ -82,7 +82,9 @@ more details refer [mocap_lib](./mocap_lib)
 - [x] [SPIN](https://github.com/nkolot/SPIN) (body regress) 
 - [x] [r50/vipnas_mbv3_dark/hrnet_w48_384_dark etc.](https://github.com/open-mmlab/mmpose) (mmpose) (whole body keypoints)
 - [x] [mediapipe holistic](https://google.github.io/mediapipe/solutions/holistic.html)
-- [x] 
+- [x] [Calibration](./mocap_lib#calibration)
+- [x] [Smooth Filter](./mocap_lib#smooth-filter)
+- [x] [Triangulate](./mocap_lib#triangulation)
 
 
 

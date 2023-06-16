@@ -8,9 +8,24 @@
 
 - mediapipe wrapper / [mmpose](https://github.com/open-mmlab/mmpose) model support
 
+### Calibration
+
+- [multical](https://github.com/oliver-batchelor/multical)
+
 ### Middleware
 
 - [VMC](https://protocol.vmc.info/) protocol demo.
+
+### Smooth Filter
+
+- [SmoothNet](https://github.com/cure-lab/SmoothNet)
+- OneEuro
+
+### Triangulation
+
+- [anipose method](https://github.com/lambdaloop/anipose)
+- [easymocap method](https://github.com/zju3dv/EasyMocap)
+- [pose2sim method](https://github.com/perfanalytics/pose2sim/blob/main/Pose2Sim/triangulate_3d.py)
 
 ### Visualize
 
