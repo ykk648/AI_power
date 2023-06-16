@@ -101,8 +101,7 @@ if __name__ == '__main__':
     from cv2box import CVVideoLoader
     from tqdm import tqdm
 
-    with CVVideoLoader(
-            '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0802/hand1/videos/268.mp4') as cvvl:
+    with CVVideoLoader('') as cvvl:
         for _ in tqdm(range(len(cvvl))):
             _, frame = cvvl.get()
             landmarks = ld.forward_w_tracking(frame, show=False)

@@ -29,7 +29,7 @@ from sklearn.model_selection import train_test_split
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--root_dir', default='/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/datasets_TVCOCO_hand_train', type=str,
+parser.add_argument('--root_dir', default='/mmdetection_data/datasets_TVCOCO_hand_train', type=str,
                     help="root path of images and labels, include ./images and ./labels and classes.txt")
 parser.add_argument('--save_path', type=str, default='./train.json',
                     help="if not split the dataset, give a path to a json file")

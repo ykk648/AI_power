@@ -22,8 +22,8 @@ from matplotlib.collections import PatchCollection
 from pycocotools.coco import COCO
 
 matplotlib.use('TkAgg')
-annfile = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/local_multi_view_all/0915_multi_view_4person_test_5k/annotations/annotations.json'
-imgroot = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/mmlab/mmdetection_data/local_multi_view_all/0915_multi_view_4person_test_5k/images'
+annfile = '/annotations/annotations.json'
+imgroot = '/images'
 
 
 def showAnns(anns):

@@ -3,8 +3,6 @@
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
 import numpy as np
-from cv2box import CVCamera, CVFile
-import itertools as it
 
 
 def projectN3(kpts3d, Pall):
@@ -117,49 +115,33 @@ class EasyMocapTriangulate:
 
 
 if __name__ == '__main__':
-
-    cam_pkl_path = '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0809cal/front_4_0809_window_1080.pkl'
-    # emt = EasyMocapTriangulate(cam_pkl_path)
-
-    kp_2d_pkl_list = [
-        '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0812/near1/268_2dkp.pkl',
-        '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0812/near1/617_2dkp.pkl',
-        '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0812/near1/728_2dkp.pkl',
-        '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0812/near1/886_2dkp.pkl',
-    ]
-
-    from cv2box import CVFile, CVVideoLoader, CVImage, CVCamera
     import cv2
+    from cv2box import CVFile, CVVideoLoader, CVImage, CVCamera
 
+    # using 2d kps to bundle adjust cam params
+    cam_pkl_path = ''
+    kp_2d_pkl_list = []
     keypoints_2d = []
     for i in range(len(kp_2d_pkl_list)):
         kp_2d_this_cam = CVFile(kp_2d_pkl_list[i]).data
         keypoints_2d.append(kp_2d_this_cam)
     keypoints_2d = np.array(keypoints_2d)
-    # print(keypoints_2d.shape)
-
     camera_group = CVCamera(cam_pkl_path).load_camera_group().bundle_adjust_iter(keypoints_2d)
-    CVFile(
-        '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0812/near1/front_4_0809_window_1080_bundle_adjust_cgroup.pkl').pickle_write(
-        camera_group)
+    CVFile('cgroup.pkl').pickle_write(camera_group)
 
-    # for i in range(901):
-    #     keypoints_2d_ = keypoints_2d[:, i, :, :].reshape((4, 67, 3))
-    #     # print(keypoints_2d_.shape)
-    #
-    #     kps_3d, kps_repro = emt.triangulate(keypoints_2d_)
-    #     # print(kps_3d.shape)
-    #     # print(kps_repro.shape)
-    #
-    #     CVFile('/workspace/codes/mmlab/multicam_realtime/results/emc_70_whole_wo_hand_sep_old/{}.pkl'.format(i)).pickle_write(kps_3d)
+    # triangulate
+    emt = EasyMocapTriangulate(cam_pkl_path)
+    for i in range(901):
+        keypoints_2d_ = keypoints_2d[:, i, :, :].reshape((4, 67, 3))
+        kps_3d, kps_repro = emt.triangulate(keypoints_2d_)
+        CVFile('./{}.pkl'.format(i)).pickle_write(kps_3d)
 
     # # anipose交叉验证，需要原始pall代替rotate pall
     # from mocap_lib.triangulate.anipose_triangulate import AniposeTriangulate
     # at = AniposeTriangulate(cam_pkl_path)
     # n_view_kps_2d = at.project(kps_3d[:, :3])
-
-    # with CVVideoLoader(
-    #         '/workspace/84_cluster/mnt/cv_data_ljt/dataset/multi_view_human/0802/hand1/videos/617.mp4') as cvvl:
+    #
+    # with CVVideoLoader('') as cvvl:
     #     for i in range(len(cvvl)):
     #         _, frame = cvvl.get()
     #         for j in range(kps_3d.shape[0]):

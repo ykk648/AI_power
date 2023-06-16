@@ -19,7 +19,7 @@ if __name__ == '__main__':
     # CVImage(face, image_format='cv2').show()
 
     # === for image dir ===
-    face_img_dir = '/workspace/codes/private/AI_power/resource/test1'
+    face_img_dir = 'resource/test1'
     fa = FaceRestore(use_gpu=False,
                      mode='RestoreFormer')  # gfpgan gfpganv3 gfpganv4 gpen gpen2048 dfdnet RestoreFormer CodeFormer
     for img_p in get_path_by_ext(face_img_dir):
