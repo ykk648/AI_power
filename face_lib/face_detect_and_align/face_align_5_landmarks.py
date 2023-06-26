@@ -102,6 +102,7 @@ class FaceDetect5Landmarks:
             crop_size:
             mode: default mtcnn_512 arcface_512 arcface default_95
             only_roi: for talking head, don't do warpAffine
+            pad_ratio: 0 for speed, 0.2 for best results
         Returns: cv2 image
         """
         assert mode in ['default', 'mtcnn_512', 'mtcnn_256', 'arcface_512', 'arcface', 'default_95']
