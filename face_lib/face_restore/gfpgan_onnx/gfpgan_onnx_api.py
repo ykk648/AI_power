@@ -12,6 +12,9 @@ MODEL_ZOO = {
     'GFPGANv1.4': {
         'model_path': 'pretrain_models/face_lib/face_restore/gfpgan/GFPGANv1.4.onnx'
     },
+    'GFPGANv1.3': {
+        'model_path': 'pretrain_models/face_lib/face_restore/gfpgan/GFPGANv1.3.onnx'
+    },
 }
 
 # import torch
@@ -27,6 +30,7 @@ MODEL_ZOO = {
 #                 size=shape,
 #                 stride=None)
 #     return tensor
+
 
 class GFPGAN(ModelBase):
     def __init__(self, model_type='GFPGANv1.4', provider='gpu'):
