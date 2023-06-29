@@ -67,7 +67,7 @@ class CIHPPGN(ModelBase):
 
 
 if __name__ == '__main__':
-    cihp = CIHPPGN()
+    cihp = CIHPPGN(model_name='cihp_pgn', provider='gpu')
 
     img_p = ''
     # decrease size to reduce GPU mem

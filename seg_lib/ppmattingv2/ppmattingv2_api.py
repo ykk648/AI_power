@@ -6,6 +6,7 @@ from apstone import ModelBase
 import cv2
 import numpy as np
 import copy
+from cv2box import CVImage
 
 MODEL_ZOO = {
     # https://github.com/jiachen0212/pp_mattingv2
@@ -65,4 +66,5 @@ class PPMattingV2(ModelBase):
 
 if __name__ == '__main__':
     ppm = PPMattingV2()
-    ppm.forward('')
+    img_p = ''
+    ppm.forward(CVImage(img_p).bgr)
