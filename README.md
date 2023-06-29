@@ -95,8 +95,10 @@ more details refer [seg_lib](./seg_lib)
 <details open>
 <summary>(click to collapse)</summary>
 
-- [x] [u2net](https://github.com/danielgatis/rembg) (object segmentation) 
-- [x] [ppmattingv2](https://github.com/jiachen0212/pp_mattingv2)
+- [x] [u2net](./seg_lib#u2net) (object segmentation) 
+- [x] [ppmattingv2](./seg_lib#ppmattingv2)
+- [x] [carvekit](./seg_lib#carvekit)
+- [x] [cihp_pgn](./seg_lib#cihp_pgn)
 
 
 Supported AIGC related models&methods:

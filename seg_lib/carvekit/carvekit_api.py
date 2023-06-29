@@ -2,7 +2,9 @@
 # @Time : 2023/6/27
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
-
+"""
+ref https://github.com/OPHoperHPO/image-background-remove-tool
+"""
 import os
 import numpy as np
 from PIL import Image, ImageOps
