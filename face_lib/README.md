@@ -14,8 +14,8 @@
 
 ### Face Parsing
 
-- face parsing from [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch)
-- onnx and torch.jit speed compare `face_parsing/face_parsing_api.py`
+- [face-parsing.PyTorch](./face_parsing/face_parsing_api.py), onnx converted
+- [DFL Xseg](./face_parsing/dfl_xseg_net.py), based on opensource, self trained (private data)
 
 ### Face Restore 
 
