@@ -4,6 +4,13 @@ All pretrain models and supply materials can be accessed by my share link:
 
 [BaiDuPan](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
 
+### Projects of mine
+
+- [cv2box](https://github.com/ykk648/cv2box):   A gather of tools or functions frequently using in my work.
+- [AI_power](https://github.com/ykk648/AI_power): Convenience API for your AI power.
+- [apstone](https://github.com/ykk648/apstone): Base stone of AI_power, maintain all inference of AI_Power models.
+
+
 ### Model&Method Zoo
 
 '*' means self-trained model
@@ -29,8 +36,8 @@ more details refer [face_lib](./face_lib)
 - [x] [CurricularFace](https://github.com/HuangYG123/CurricularFace)
 - [x] [InsightFace](https://github.com/deepinsight/insightface/tree/master/model_zoo) 
 - [x] [PFPLD](https://github.com/hanson-young/nniefacelib/tree/master/PFPLD/models/onnx) (face landmark)
-- [x] [*XsegNet](https://github.com/iperov/DeepFaceLab/tree/master/models/Model_XSeg) (face parsing)
-- [x] [face-parsing.PyTorch](https://github.com/zllrunning/face-parsing.PyTorch)
+- [x] [*XsegNet](./face_lib#face-parsing) (face parsing)
+- [x] [face-parsing.PyTorch](./face_lib#face-parsing)
 - [x] [GPEN](https://github.com/yangxy/GPEN) (face restore)
 - [x] [DFDNet](https://github.com/csxmli2016/DFDNet) 
 - [x] [GFPGAN](https://github.com/TencentARC/GFPGAN) 
@@ -146,8 +153,3 @@ more details refer [ocr_lib](./audio_lib)
 
 - [x] [paddleocr](https://github.com/PaddlePaddle/PaddleOCR) 
 
-### Projects of mine
-
-- [cv2box](https://github.com/ykk648/cv2box):   A gather of tools or functions frequently using in my work.
-- [AI_power](https://github.com/ykk648/AI_power): Convenience API for your AI power.
-- [apstone](https://github.com/ykk648/apstone): Base stone of AI_power, maintain all inference of AI_Power models.

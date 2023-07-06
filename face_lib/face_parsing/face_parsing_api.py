@@ -2,13 +2,15 @@
 # @Time : 2021/11/25
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
+"""
+https://github.com/zllrunning/face-parsing.PyTorch
+"""
 import numpy as np
 import cv2
 from cv2box import CVImage
 from apstone import ModelBase
 
 MODEL_ZOO = {
-    # https://github.com/zllrunning/face-parsing.PyTorch
     # input_name: ['x'], shape: [[1, 3, 512, 512]]
     # output_name: ['feat_out'], shape: [[1, 19, 512, 512]]
     'face_parse_onnx': {
@@ -72,7 +74,6 @@ class FaceParsing(ModelBase):
         mask = cv2.resize(mask, mask_shape)
         return mask[..., np.newaxis]
 
-
     def show(self):
         vis_im = CVImage(self.face_image).bgr.copy().astype(np.uint8)
         vis_parsing_anno = self.parsing_results.copy().astype(np.uint8)
@@ -92,9 +93,7 @@ class FaceParsing(ModelBase):
 if __name__ == "__main__":
     test_img = 'resource/cropped_face/512.jpg'
     fp = FaceParsing(model_name='face_parse_onnx', provider='trt')
-    from cv2box import MyTimer
-    with MyTimer() as mt:
-        for i in range(100):
-            parsing = fp.forward(test_img)
-            mask = fp.get_face_mask((512, 512))
+
+    parsing = fp.forward(test_img)
+    mask = fp.get_face_mask((512, 512))
     # fp.show()

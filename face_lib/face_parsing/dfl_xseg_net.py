@@ -2,13 +2,16 @@
 # @Time : 2022/8/12
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
-
+"""
+based on https://github.com/iperov/DeepFaceLab/tree/master/models/Model_XSeg
+base model come from https://www.dfldata.cc/forum.php, self trained (private data
+"""
 from apstone import ModelBase
 from cv2box import CVImage
 import numpy as np
 
 MODEL_ZOO = {
-    'xseg_net': {
+    'xseg_net_private': {
         'model_path': 'private_models/deep_fake/deepfacelab/xseg/xseg_211104_4790000.onnx',
         'input_dynamic_shape': (1, 256, 256, 3),
     }
@@ -16,7 +19,7 @@ MODEL_ZOO = {
 
 
 class XsegNet(ModelBase):
-    def __init__(self, model_name='xseg_net', provider='gpu'):
+    def __init__(self, model_name='xseg_net_private', provider='gpu'):
         super().__init__(MODEL_ZOO[model_name], provider)
 
     def forward(self, image_in_):
