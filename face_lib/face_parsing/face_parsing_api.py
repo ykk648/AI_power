@@ -92,8 +92,8 @@ class FaceParsing(ModelBase):
 
 if __name__ == "__main__":
     test_img = 'resource/cropped_face/512.jpg'
-    fp = FaceParsing(model_name='face_parse_onnx', provider='trt')
+    fp = FaceParsing(model_name='face_parse_onnx', provider='gpu')
 
     parsing = fp.forward(test_img)
-    mask = fp.get_face_mask((512, 512))
-    # fp.show()
+    # mask = fp.get_face_mask((512, 512))
+    fp.show()

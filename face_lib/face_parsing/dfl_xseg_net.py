@@ -11,6 +11,10 @@ from cv2box import CVImage
 import numpy as np
 
 MODEL_ZOO = {
+    'xseg_net': {
+        'model_path': 'pretrain_models/face_lib/face_parsing/230611_dfldata_16_17.onnx',
+        'input_dynamic_shape': (1, 256, 256, 3),
+    },
     'xseg_net_private': {
         'model_path': 'private_models/deep_fake/deepfacelab/xseg/xseg_211104_4790000.onnx',
         'input_dynamic_shape': (1, 256, 256, 3),
@@ -34,7 +38,7 @@ if __name__ == '__main__':
     image_p = 'resource/cropped_face/512.jpg'
     image_in = CVImage(image_p).bgr
 
-    xseg = XsegNet()
+    xseg = XsegNet(model_name='xseg_net')
 
     output = xseg.forward(image_in)
     print(output.shape)
