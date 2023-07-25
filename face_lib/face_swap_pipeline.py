@@ -54,4 +54,5 @@ if __name__ == '__main__':
     src_img_in[roi_box[1]:roi_box[3], roi_box[0]:roi_box[2]] = swap_roi
 
     CVImage(src_img_in).show(0)
+    CVImage(src_img_in).save(src_img.replace('.jpg', '_swap.jpg'))
 

@@ -33,7 +33,7 @@ class FaceRestorePipe:
 
     def forward(self, image_in):
         face_image, mat_rev, roi_box = self.face_detect_and_align(image_in)
-        face_restore_out = frp.face_restore(face_image)
+        face_restore_out = self.face_restore(face_image)
         # face_restore_out = CVImage(face_restore_out).rgb()
         restore_roi = CVImage(None).recover_from_reverse_matrix(face_restore_out/255,
                                                                 image_in[roi_box[1]:roi_box[3], roi_box[0]:roi_box[2]],
