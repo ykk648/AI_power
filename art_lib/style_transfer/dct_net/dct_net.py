@@ -1,10 +1,16 @@
-import os
+# -- coding: utf-8 --
+# @Time : 2023/1/17
+# @Author : ykk648
+# @Project : https://github.com/ykk648/AI_power
 import cv2
 import numpy as np
 from apstone import ModelBase
 from cv2box import CVImage
 
 from art_lib.style_transfer.dct_net.utils import resize_size, padTo16x
+"""
+ref https://www.modelscope.cn/models/damo/cv_unet_person-image-cartoon_compound-models/summary
+"""
 
 MODEL_ZOO = {
     '3d': {

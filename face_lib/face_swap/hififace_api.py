@@ -26,6 +26,9 @@ MODEL_ZOO = {
     '1598K_bs1': {
         'model_path': 'private_models/deep_fake/hififace/pretrain_models/9Q_1598k_ema_sim_bs1_8003.onnx',
     },
+    '1195K_bs1': {
+        'model_path': 'private_models/deep_fake/hififace/pretrain_models/256output_1195_sim_bs1_8003.onnx',
+    },
     '2729K_bs1': {
         'model_path': 'private_models/deep_fake/hififace/pretrain_models/512input512output_2729_sim_bs1_8003.onnx',
         # 'input_dynamic_shape': [(1, 3, 512, 512), (1, 512)]

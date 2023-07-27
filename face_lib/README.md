@@ -1,3 +1,9 @@
+### Face Attribution
+
+- based on [mmclassification](https://github.com/open-mmlab/mmclassification), already convert to onnx.
+- supply pretrained model trained by private dataset, mind the face should be aligned first.
+
+
 ### Face Detect & Align
 
 - ffhq align method
@@ -24,7 +30,7 @@
 - [GFPGAN](https://github.com/TencentARC/GFPGAN)
 - ESRGAN etc. TODO
 
-### Face Attribution
+### Face Swap
 
-- based on [mmclassification](https://github.com/open-mmlab/mmclassification), already convert to onnx.
-- supply pretrained model trained by private dataset, mind the face should be aligned first.
+- [Hififace](https://johann.wang/HifiFace/)
+- [InSwapper](https://github.com/deepinsight/insightface)
