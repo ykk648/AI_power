@@ -73,8 +73,10 @@ def estimate_norm(lmk, image_size=112, mode='arcface'):
     min_index = []
     min_error = float('inf')
     if mode == 'arcface':
-        assert image_size == 112
+        # assert image_size == 112
         src = arcface_src
+        src_map = {112: src.copy(), 128: src.copy() * 128 / 112 }
+        src = src_map[image_size]
     elif mode == 'arcface_224':
         # for Deep3DFaceRecon
         assert image_size == 224

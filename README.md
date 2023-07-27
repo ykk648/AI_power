@@ -43,7 +43,8 @@ more details refer [face_lib](./face_lib)
 - [x] [GFPGAN](https://github.com/TencentARC/GFPGAN) 
 - [x] [RestoreFormer](https://github.com/wzhouxiff/RestoreFormer) 
 - [x] [CodeFormer](https://github.com/sczhou/CodeFormer) 
-- [x] [*HifiFace](https://johann.wang/HifiFace/) (face swap)
+- [x] [*HifiFace](./face_lib#face-swap) (face swap)
+- [x] [InSwapper](./face_lib#face-swap)
 
 
 
@@ -115,8 +116,10 @@ more details refer [art_lib](./seg_lib)
 <details open>
 <summary>(click to collapse)</summary>
 
-- [x] [DCTNet](https://www.modelscope.cn/models/damo/cv_unet_person-image-cartoon_compound-models/summary) (style transfer) 
-- [x] [TPSMM](https://github.com/yoyo-nb/Thin-Plate-Spline-Motion-Model) (talking head) 
+- [x] [DCTNet](./seg_lib#style-transfer) (style transfer) 
+- [x] [TPSMM](./seg_lib#talking-head) (talking head) 
+- [x] [SadTalker](./seg_lib#talking-head)
+- [x] [Wav2lip](./seg_lib#talking-head)
 
 
 Supported GPT related models&methods:

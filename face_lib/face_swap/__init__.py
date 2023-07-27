@@ -3,3 +3,4 @@
 # @Author : ykk648
 # @Project : https://github.com/ykk648/AI_power
 from .hififace_api import HifiFace
+from .inswapper_api import InSwapper
