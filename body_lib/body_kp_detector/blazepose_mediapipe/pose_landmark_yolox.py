@@ -81,7 +81,7 @@ class LandmarkDetectorYolox:
 
 
 if __name__ == '__main__':
-    # image_path = 'resource/for_pose/t_pose_1080p.jpeg'
+    # image_path = 'resources/for_pose/t_pose_1080p.jpeg'
     # image_in = CVImage(image_path).bgr
 
     """

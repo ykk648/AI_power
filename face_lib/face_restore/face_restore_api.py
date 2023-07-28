@@ -59,7 +59,7 @@ if __name__ == '__main__':
     from tqdm import tqdm
 
     # === for image ===
-    face_img_p = 'resource/cropped_face/512.jpg'
+    face_img_p = 'resources/cropped_face/512.jpg'
     fa = FaceRestore(use_gpu=False, mode='gfpganv4')  #
     with MyFpsCounter() as mfc:
         face = fa.forward(face_img_p, output_size=512)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     CVImage(face, image_format='cv2').show()
 
     # # === for image dir ===
-    # face_img_dir = 'resource/test1'
+    # face_img_dir = 'resources/test1'
     # fa = FaceRestore(use_gpu=False, mode='RestoreFormer')
     # for img_p in get_path_by_ext(face_img_dir):
     #     face = fa.forward(str(img_p), output_size=512)

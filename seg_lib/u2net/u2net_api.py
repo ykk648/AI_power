@@ -76,6 +76,6 @@ class U2netSeg(ModelBase):
 
 if __name__ == '__main__':
     fb_cur = U2netSeg(model_type='u2net', provider='gpu')
-    mask, rgba = fb_cur.forward('resource/test1.jpg', post_process=False)
+    mask, rgba = fb_cur.forward('resources/test1.jpg', post_process=False)
     CVImage(mask).show()
     CVImage(rgba).save('output.png')

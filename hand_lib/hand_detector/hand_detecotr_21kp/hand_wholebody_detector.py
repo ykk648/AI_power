@@ -148,7 +148,7 @@ class HandWholebodyDetector:
 
 
 if __name__ == '__main__':
-    image_path = 'resource/t_pose.jpeg'
+    image_path = 'resources/t_pose.jpeg'
     image_in = CVImage(image_path).bgr
     bbox = [100, 365, 242, 422]
 

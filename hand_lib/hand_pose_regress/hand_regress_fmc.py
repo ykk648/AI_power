@@ -97,7 +97,7 @@ class HandRegressorVideo(HandRegressorFmc):
 
 
 if __name__ == '__main__':
-    image_p = 'resource/for_pose/t_pose_1080p.jpeg'
+    image_p = 'resources/for_pose/t_pose_1080p.jpeg'
     box_l = [1306, 259, 1432, 305]
     box_r = [494, 260, 609, 303]
     hrf = HandRegressorFmc(model='fmc', provider='gpu')

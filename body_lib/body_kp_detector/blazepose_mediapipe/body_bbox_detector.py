@@ -83,7 +83,7 @@ class BodyDetector:
 
 
 if __name__ == '__main__':
-    image_path = 'resource/yoga2.webp'
+    image_path = 'resources/yoga2.webp'
     image_in = CVImage(image_path).bgr
     pd = BodyDetector(provider='gpu')
     filtered_detections = pd.forward(image_in, show=True)
@@ -92,5 +92,5 @@ if __name__ == '__main__':
     #     for i in range(10):
     #         filtered_detections = pd.forward(image_in)
 
-    # img_in, ratio, pad_w, pad_h = CVImage('resource/t_pose.jpeg').resize_keep_ratio((128, 128))
+    # img_in, ratio, pad_w, pad_h = CVImage('resources/t_pose.jpeg').resize_keep_ratio((128, 128))
     # CVImage(img_in).show(0)

@@ -38,7 +38,7 @@ if __name__ == '__main__':
 
     # === face detect and align ===
     fd = FaceDetect5Landmarks(mode='scrfd_500m')
-    img_path = 'resource/test3.jpg'
+    img_path = 'resources/test3.jpg'
     bboxes_scrfd, kpss_scrfd = fd.get_bboxes(img_path, min_bbox_size=64)
     # fd.draw_face()
     print(kpss_scrfd)

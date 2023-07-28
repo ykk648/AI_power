@@ -43,5 +43,5 @@ class Face3dCoeffs(ModelBase):
 
 if __name__ == '__main__':
     f3c = Face3dCoeffs(model_type='facerecon_230425', provider='gpu')
-    coeffs = f3c.forward('resource/cropped_face/112.png')
+    coeffs = f3c.forward('resources/cropped_face/112.png')
     print(coeffs.shape)
