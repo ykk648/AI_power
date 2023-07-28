@@ -59,7 +59,7 @@ class LandmarkDetectorOrigin:
 
 
 if __name__ == '__main__':
-    image_path = 'resource/for_pose/girl_640x480.jpg'
+    image_path = 'resources/for_pose/girl_640x480.jpg'
     image_in = CVImage(image_path).bgr
 
     """

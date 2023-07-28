@@ -46,7 +46,7 @@ class HandDetectorYolox(BboxDetectorBase):
 
 
 if __name__ == '__main__':
-    # image_p = 'resource/for_pose/t_pose_1080p.jpeg'
+    # image_p = 'resources/for_pose/t_pose_1080p.jpeg'
     # img_bgr = CVImage(image_p).bgr
     # hd = HandDetectorYolox(model='yolox_s_trt16', threshold=0.5, provider='gpu')  # yolox_s_trt16
     # hd_result = hd.forward(img_bgr, show=True)

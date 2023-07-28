@@ -91,7 +91,7 @@ class FaceParsing(ModelBase):
 
 
 if __name__ == "__main__":
-    test_img = 'resource/cropped_face/512.jpg'
+    test_img = 'resources/cropped_face/512.jpg'
     fp = FaceParsing(model_name='face_parse_onnx', provider='gpu')
 
     parsing = fp.forward(test_img)

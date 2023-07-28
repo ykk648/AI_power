@@ -67,7 +67,7 @@ class GFPGANONNXPipe:
 if __name__ == '__main__':
 
     # # === for image ===
-    # src_img = 'resource/test2.jpg'
+    # src_img = 'resources/test2.jpg'
     # fsp = FaceRestorePipe(show=True)
     # src_img_in = CVImage(src_img).bgr
     # result = fsp.forward(src_img_in)

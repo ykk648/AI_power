@@ -212,7 +212,7 @@ if __name__ == '__main__':
     from cv2box import CVImage, MyFpsCounter
 
     image_in = CVImage(
-        'resource/for_pose/t_pose_1080p.jpeg').bgr
+        'resources/for_pose/t_pose_1080p.jpeg').bgr
 
     md = MediapipeDetector(model_type='pose', show=True, cfg={
         'model_complexity': 2,

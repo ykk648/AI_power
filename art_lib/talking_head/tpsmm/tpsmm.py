@@ -127,8 +127,8 @@ class TPSMM(ModelBase):
 
 
 if __name__ == '__main__':
-    img_source_ = 'resource/cropped_face/112.png'
-    img_driving_ = 'resource/cropped_face/512.jpg'
+    img_source_ = 'resources/cropped_face/112.png'
+    img_driving_ = 'resources/cropped_face/512.jpg'
 
     tpsmm = TPSMM(provider='gpu')
     tpsmm.get_kp_source(img_source_)

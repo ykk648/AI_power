@@ -49,7 +49,7 @@ class FaceEmbedding(ModelBase):
 if __name__ == '__main__':
     # CurricularFace
     fb_cur = FaceEmbedding(model_type='insightface_r50', provider='gpu')
-    latent_cur = fb_cur.forward('resource/cropped_face/112.png')
+    latent_cur = fb_cur.forward('resources/cropped_face/112.png')
     print(latent_cur.shape)
     # print(latent_cur)
 
@@ -57,14 +57,14 @@ if __name__ == '__main__':
     # fe = FaceEmbedding(model_type='arcface_tjm', provider='gpu')
     # with MyFpsCounter() as mfc:
     #     for i in range(10):
-    #         latent_arc = fe.forward('resource/cropped_face/112.png')
+    #         latent_arc = fe.forward('resources/cropped_face/112.png')
     # print(latent_arc.shape)
     # print(latent_arc)
 
     # # insightface MBF
     # fe = FaceEmbedding(model_type='insightface_mbf')
-    # latent_mbf_1 = fe.forward('resource/cropped_face/112.png')
-    # latent_mbf_2 = fe.forward('resource/cropped_face/112.png')
+    # latent_mbf_1 = fe.forward('resources/cropped_face/112.png')
+    # latent_mbf_2 = fe.forward('resources/cropped_face/112.png')
     # print(latent_mbf_1.shape)
     # print(latent_mbf_1)
     # from cv2box.utils.math import CalDistance

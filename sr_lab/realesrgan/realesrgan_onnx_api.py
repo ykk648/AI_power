@@ -66,7 +66,7 @@ class GFPGAN(ModelBase):
 
 
 if __name__ == '__main__':
-    face_img_p = 'resource/test1.jpg'
+    face_img_p = 'resources/test1.jpg'
     fa = GFPGAN(model_type='RealESRGAN_x2plus-dynamic', provider='gpu')
     face = fa.forward(face_img_p)
     # CVImage(face, image_format='cv2').save('./gfpgan.jpg')

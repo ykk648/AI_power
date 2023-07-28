@@ -64,7 +64,7 @@ class SegFormer(ModelBase):
 
 
 if __name__ == '__main__':
-    img_p = 'resource/for_pose/yoga2.jpg'
+    img_p = 'resources/for_pose/yoga2.jpg'
 
     sf = SegFormer(model_name='segformer_b2_clothes')
     mask_img = sf.forward(img_p)

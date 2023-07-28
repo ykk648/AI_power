@@ -61,7 +61,7 @@ class GFPGAN(ModelBase):
 
 
 if __name__ == '__main__':
-    face_img_p = 'resource/cropped_face/512.jpg'
+    face_img_p = 'resources/cropped_face/512.jpg'
     fa = GFPGAN(model_type='GFPGANv1.4', provider='gpu')
 
     with MyFpsCounter() as mfc:

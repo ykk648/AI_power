@@ -57,7 +57,7 @@ class DCTNet(ModelBase):
 
 
 if __name__ == '__main__':
-    image_p = 'resource/test3.jpg'
+    image_p = 'resources/test3.jpg'
     dct = DCTNet(model_type='3d')
     out_img = dct.forward(image_p)
     CVImage(out_img).show()

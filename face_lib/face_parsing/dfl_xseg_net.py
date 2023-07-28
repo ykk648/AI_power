@@ -35,7 +35,7 @@ class XsegNet(ModelBase):
 
 
 if __name__ == '__main__':
-    image_p = 'resource/cropped_face/512.jpg'
+    image_p = 'resources/cropped_face/512.jpg'
     image_in = CVImage(image_p).bgr
 
     xseg = XsegNet(model_name='xseg_net')

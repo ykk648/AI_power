@@ -29,7 +29,7 @@ class EyeOpen:
 
 if __name__ == '__main__':
     # close [0,1] open [1,0]
-    image_p = './resource/open.JPG'
+    image_p = './resources/open.JPG'
     eo = EyeOpen()
 
     print(eo.forward(image_p))

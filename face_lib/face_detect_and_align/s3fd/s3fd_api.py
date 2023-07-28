@@ -112,5 +112,5 @@ class S3FD(ModelBase):
 
 if __name__ == '__main__':
     s3 = S3FD(model_type='s3fd', provider='gpu')
-    detect_results = s3.forward('resource/test3.jpg')
+    detect_results = s3.forward('resources/test3.jpg')
     print(detect_results)

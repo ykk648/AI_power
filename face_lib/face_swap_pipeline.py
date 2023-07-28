@@ -82,8 +82,8 @@ class FaceSwapPipe:
 
 
 if __name__ == '__main__':
-    src_img = 'resource/test1.jpg'
-    dst_img = 'resource/test3.jpg'
+    src_img = 'resources/test1.jpg'
+    dst_img = 'resources/test3.jpg'
 
     # fsp = FaceSwapPipe(mode='hififace', show=True)
     # fsp.swap_face_hififace(src_img, dst_img)
