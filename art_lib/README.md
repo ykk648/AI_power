@@ -1,3 +1,7 @@
+### Inpainting
+
+- [lama](https://github.com/Sanster/lama-cleaner)
+
 ### Style Transfer
 
 - [DctNet](https://www.modelscope.cn/models/damo/cv_unet_person-image-cartoon_compound-models/summary)
