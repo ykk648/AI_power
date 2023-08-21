@@ -16,3 +16,7 @@
 ### ppmattingv2
 
 - [pp_mattingv2](https://github.com/jiachen0212/pp_mattingv2)
+
+### RAFT
+
+- [RAFT](https://github.com/princeton-vl/RAFT)
