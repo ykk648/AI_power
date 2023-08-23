@@ -1,22 +1,10 @@
 ## StableDiffusion Lib
 
 
-### carvekit
+### CLIP encoder
 
-- [image-background-remove-tool](https://github.com/OPHoperHPO/image-background-remove-tool) API example, for cloth seg.
+- [CLIP encoder](https://huggingface.co/openai/clip-vit-base-patch32) including text&image encoder
 
-### cihp_pgn
+### IP-Adapter
 
-- [CIHP_PGN](https://github.com/Engineering-Course/CIHP_PGN) Human segmentation, model converted to onnx
-
-### u2net
-
-- [rembg](https://github.com/danielgatis/rembg) 
-
-### ppmattingv2
-
-- [pp_mattingv2](https://github.com/jiachen0212/pp_mattingv2)
-
-### RAFT
-
-- [RAFT](https://github.com/princeton-vl/RAFT)
+- [ip_adapter](https://github.com/tencent-ailab/IP-Adapter/blob/main/ip_adapter/ip_adapter.py)
