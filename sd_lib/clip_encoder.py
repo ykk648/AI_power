@@ -10,6 +10,7 @@ from transformers import CLIPTextModel, CLIPTokenizer
 from transformers import CLIPVisionModelWithProjection, CLIPImageProcessor
 
 """
+CLIP from openai
 clip image encoder from:
 https://github.com/tencent-ailab/IP-Adapter/blob/00cbac222600928f68103c16ed9931074fca9edd/ip_adapter/ip_adapter.py#L45
 """
