@@ -59,7 +59,7 @@ class ClipImage:
 
 class ImageProj:
     def __init__(self, num_tokens=4):
-        from sd_lib.local_model_structure import ImageProjModel
+        from sd_lib.models import ImageProjModel
         self.device = "cuda"
         self.image_proj_model = ImageProjModel(
             cross_attention_dim=768,  # self.pipe.unet.config.cross_attention_dim
