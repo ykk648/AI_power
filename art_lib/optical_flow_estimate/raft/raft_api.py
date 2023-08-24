@@ -4,7 +4,7 @@
 # @Project : https://github.com/ykk648/AI_power
 
 import numpy as np
-from art_lib.raft.utils import flow_to_image
+from art_lib.optical_flow_estimate.raft.utils import flow_to_image
 from cv2box import CVImage
 from apstone import ModelBase
 
