@@ -8,7 +8,7 @@ from cv2box import CVImage
 from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline, StableDiffusionInpaintPipelineLegacy, \
     DDIMScheduler, AutoencoderKL
 
-from sd_lib.models import IPAdapter, IPAdapterPlus
+from sd_lib.ip_adapter.models import IPAdapter, IPAdapterPlus
 
 SD_PRETRAIN = './sd_models/stable-diffusion-v1-5'
 VAE_PRETRAIN = './sd_models/stabilityai_sd-vae-ft-mse'
@@ -29,7 +29,7 @@ def image_grid(imgs, rows, cols):
     return grid
 
 
-class IpAdapterAPI():
+class IpAdapterAPI:
     def __init__(self, device="cuda"):
         # load SD pipeline
         noise_scheduler = DDIMScheduler(
