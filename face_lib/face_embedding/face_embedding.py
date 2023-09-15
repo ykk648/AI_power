@@ -37,8 +37,8 @@ class FaceEmbedding(ModelBase):
     def forward(self, face_image):
         """
         Args:
-            face_image: CVImage acceptable type
-        Returns: (512,) or torch.Size([512]) (tjm)
+            face_image: BGR, 0-255, CVImage
+        Returns: (512,), 0-1
         """
         face = CVImage(face_image).blob(self.input_size, self.input_mean, self.input_std, rgb=True)
         # for batch
@@ -48,10 +48,8 @@ class FaceEmbedding(ModelBase):
 
 if __name__ == '__main__':
     # CurricularFace
-    fb_cur = FaceEmbedding(model_type='insightface_r50', provider='gpu')
-    latent_cur = fb_cur.forward('resources/cropped_face/112.png')
-    print(latent_cur.shape)
-    # print(latent_cur)
+    fe = FaceEmbedding(model_type='CurricularFace', provider='gpu')
+    latent = fe.forward('resources/cropped_face/112.png')
 
     # # ArcFace
     # fe = FaceEmbedding(model_type='arcface_tjm', provider='gpu')
@@ -69,3 +67,6 @@ if __name__ == '__main__':
     # print(latent_mbf_1)
     # from cv2box.utils.math import CalDistance
     # print(CalDistance().sim(latent_mbf_1, latent_mbf_2))
+
+    print(latent.shape)
+    print(min(latent), max(latent))
