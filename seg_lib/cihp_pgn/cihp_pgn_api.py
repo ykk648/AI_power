@@ -69,7 +69,7 @@ class CIHPPGN(ModelBase):
 if __name__ == '__main__':
     cihp = CIHPPGN(model_name='cihp_pgn', provider='gpu')
 
-    img_p = ''
+    img_p = 'resources/for_pose/girl_640x480.jpg'
     # decrease size to reduce GPU mem
     img_p = CVImage(img_p).resize((320, 180)).bgr
     mask, parsing, edge = cihp.forward(img_p)

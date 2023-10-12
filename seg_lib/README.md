@@ -12,6 +12,7 @@
 ### u2net
 
 - [rembg](https://github.com/danielgatis/rembg) 
+- [cv_u2net_salient-detection](https://www.modelscope.cn/models/damo/cv_u2net_salient-detection/summary) 
 
 ### ppmattingv2
 

@@ -62,14 +62,14 @@ class DDIMInversion:
             # ptp_utils.view_images(null_text_rec)
             return ddim_inv_latents[-1], uncond_embeddings
         else:
-            return ddim_inv_latents[-1]
+            return ddim_inv_latents[-1], None
 
 
 if __name__ == '__main__':
     image_p = 'resources/for_sd/girl_reading_512_crop.png'
     blip_prompt = 'a woman reading a book'
     ddimi = DDIMInversion(device='cuda', num_inv_steps=25)
-    latent_out, uncond_embedding = ddimi.forward(image_p, blip_prompt, null_optim=True)
+    latent_out, uncond_embedding = ddimi.forward(image_p, blip_prompt, null_optim=False)
 
     print(latent_out.shape)
     print(uncond_embedding.shape)

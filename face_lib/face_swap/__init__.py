@@ -4,4 +4,4 @@
 # @Project : https://github.com/ykk648/AI_power
 from .hififace_api import HifiFace
 from .inswapper_api import InSwapper
-from .face_fusion_damo import FaceFusionDamo
+from .facefusion_api import FaceFusionDamo
