@@ -45,6 +45,7 @@ more details refer [face_lib](./face_lib)
 - [x] [CodeFormer](https://github.com/sczhou/CodeFormer) 
 - [x] [*HifiFace](./face_lib#face-swap) (face swap)
 - [x] [InSwapper](./face_lib#face-swap)
+- [x] [FaceFusion](./face_lib#face-swap)
 
 
 
@@ -108,7 +109,7 @@ more details refer [seg_lib](./seg_lib)
 - [x] [ppmattingv2](./seg_lib#ppmattingv2)
 - [x] [RAFT](./seg_lib#raft)
 - [x] [u2net](./seg_lib#u2net) (object segmentation) 
-
+- [x] [cv_u2net_salient-detection](./seg_lib#u2net)
 
 Supported AIGC related models&methods:
 

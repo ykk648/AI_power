@@ -26,6 +26,7 @@ class FaceSwapPipe:
             self.fe = FaceEmbedding(model_type='CurricularFace', provider='gpu')
             self.d3f = Face3dCoeffs(model_type='facerecon_modelscope', provider='gpu')
         self.fd = FaceDetect5Landmarks(mode='scrfd_500m')
+        print('model init done!')
 
     def face_detect_and_align(self, image_in):
         image_in = CVImage(image_in).bgr
@@ -115,7 +116,9 @@ class FaceSwapPipe:
         src_img_in = CVImage(src_img_p).bgr
         swap_roi = CVImage(None).recover_from_reverse_matrix(swap_face,
                                                              src_img_in[roi_box[1]:roi_box[3], roi_box[0]:roi_box[2]],
-                                                             mat_rev, img_fg_mask=None)
+                                                             mat_rev, img_fg_mask=None, blur=True)
+        if self.show:
+            CVImage(swap_roi).show(0)
         src_img_in[roi_box[1]:roi_box[3], roi_box[0]:roi_box[2]] = swap_roi
 
         if self.show:

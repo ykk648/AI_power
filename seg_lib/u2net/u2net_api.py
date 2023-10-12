@@ -27,6 +27,10 @@ MODEL_ZOO = {
     'silueta': {
         'model_path': 'pretrain_models/seg_lib/u2net/silueta.onnx'
     },
+    # from https://www.modelscope.cn/models/damo/cv_u2net_salient-detection/summary
+    'u2net-salient-detection_damo': {
+        'model_path': 'pretrain_models/seg_lib/u2net/u2net-salient-detection_damo.onnx'
+    },
 }
 
 
@@ -75,7 +79,7 @@ class U2netSeg(ModelBase):
 
 
 if __name__ == '__main__':
-    fb_cur = U2netSeg(model_type='u2net', provider='gpu')
+    fb_cur = U2netSeg(model_type='u2net-salient-detection_damo', provider='gpu')
     mask, rgba = fb_cur.forward('resources/test1.jpg', post_process=False)
     CVImage(mask).show()
     CVImage(rgba).save('output.png')

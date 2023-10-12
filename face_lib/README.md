@@ -32,5 +32,6 @@
 
 ### Face Swap
 
+- [FaceFusion](https://modelscope.cn/models/damo/cv_unet-image-face-fusion_damo/)
 - [Hififace](https://johann.wang/HifiFace/)
 - [InSwapper](https://github.com/deepinsight/insightface)
