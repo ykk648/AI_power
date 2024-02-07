@@ -1,3 +1,9 @@
+## Caution
+
+This repo is no longer maintained.
+
+All face related API move to [face_power](https://github.com/ykk648/face_power)
+
 ## Convenience API for your AI power
 
 All pretrain models and supply materials can be accessed by my share link:
