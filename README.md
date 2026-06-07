@@ -1,162 +1,103 @@
-## Caution
+# AI_power
 
-This repo is no longer maintained.
+> **This repo is no longer maintained.**
+>
+> Face, audio, and LLM related APIs have been moved to dedicated repos:
+> - [face_power](https://github.com/ykk648/face_power) - Face detection, parsing, restore, swap, etc.
+> - [audio_power](https://github.com/ykk648/audio_power) - ASR, TTS, voice conversion, audio translation
+> - [llm_power](https://github.com/ykk648/llm_power) - LLM fine-tuning, RAG, LangChain, ChatGLM
 
-All face related API move to [face_power](https://github.com/ykk648/face_power)
+Convenience API collection for computer vision, motion capture, segmentation, AIGC, and Stable Diffusion inference.
 
-All audio related API move to [audio_power](https://github.com/ykk648/audio_power)
+Pretrained models: [BaiDuPan](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: `ibgg`
 
-## Convenience API for your AI power
+## Related Projects
 
-All pretrain models and supply materials can be accessed by my share link:
+| Project | Description |
+|---------|-------------|
+| [cv2box](https://github.com/ykk648/cv2box) | CV utility functions used across all projects |
+| [apstone](https://github.com/ykk648/apstone) | Base inference engine for all model wrappers |
 
-[BaiDuPan](https://pan.baidu.com/s/18MegZnMQn1oQR1jJPpWJxQ) pwd: ibgg
+## Module Overview
 
-### Projects of mine
+### body_lib - Body Keypoint Detection
 
-- [cv2box](https://github.com/ykk648/cv2box):   A gather of tools or functions frequently using in my work.
-- [AI_power](https://github.com/ykk648/AI_power): Convenience API for your AI power.
-- [apstone](https://github.com/ykk648/apstone): Base stone of AI_power, maintain all inference of AI_Power models.
+| Model | Source | Function |
+|-------|--------|----------|
+| YOLOX-tiny/s | [MMDetection](https://github.com/open-mmlab/mmdetection) | Body bbox |
+| HRNetV2-w32 | [ModelScope](https://modelscope.cn/models/damo/cv_hrnetv2w32_body-2d-keypoints_image/summary) | Body keypoints |
+| BlazePose | [PINTO_model_zoo](https://github.com/PINTO0309/PINTO_model_zoo/tree/main/053_BlazePose) | Body keypoints |
+| Lightweight-Pose | [lightweight-human-pose-estimation](https://github.com/Daniil-Osokin/lightweight-human-pose-estimation.pytorch) | Body keypoints |
+| MoveNet | [TFHub](https://tfhub.dev/s?q=movenet) | Body keypoints |
+| KAPAO | [kapao](https://github.com/wmcnally/kapao) | Body keypoints |
 
+### hand_lib - Hand Detection & Mesh
 
-### Model&Method Zoo
+| Model | Source | Function |
+|-------|--------|----------|
+| YOLOX-tiny | [MMDetection](https://github.com/open-mmlab/mmdetection) | Hand 21 keypoints |
+| hand_detector.d2 | [hand_detector.d2](https://github.com/ddshan/hand_detector.d2) | Hand bbox |
+| MediaPipe Hands | [MediaPipe](https://google.github.io/mediapipe/solutions/hands) | Hand landmarks |
+| YOLOX* | [MMDetection](https://github.com/open-mmlab/mmdetection/blob/master/configs/yolox) | Hand detection |
+| Minimal-Hand | [minimal-hand](https://github.com/CalciferZh/minimal-hand) | Hand mesh |
+| FrankMoCap | [frankmocap](https://github.com/facebookresearch/frankmocap) | Hand pose regressor |
 
-'*' means self-trained model
+### mocap_lib - Motion Capture Pipeline
 
+| Module | Description |
+|--------|-------------|
+| [SPIN](https://github.com/nkolot/SPIN) | Body shape regress |
+| [MMPose](https://github.com/open-mmlab/mmpose) | Whole body keypoints (r50, hrnet_w48_384_dark, etc.) |
+| [MediaPipe Holistic](https://google.github.io/mediapipe/solutions/holistic.html) | Whole body holistic |
+| [Calibration](./mocap_lib#calibration) | Camera calibration |
+| [Smooth Filter](./mocap_lib#smooth-filter) | Temporal smoothing |
+| [Triangulate](./mocap_lib#triangulation) | Multi-view triangulation |
 
+### seg_lib - Segmentation & Matting
 
-Supported face related models&methods:
+| Module | Description |
+|--------|-------------|
+| [CarveKit](./seg_lib#carvekit) | Cloth segmentation |
+| [CIHP-PGN](./seg_lib#cihp_pgn) | Human parsing |
+| [U2Net](./seg_lib#u2net) | Object segmentation / saliency |
+| [PPMattingV2](./seg_lib#ppmattingv2) | Portrait matting |
+| [Green Screen Matting](./seg_lib/green_screen_matting) | Chroma-key video matting (BackgroundMattingV2) |
+| [SegFormer B2](./seg_lib/segformer_b2_clothes) | Cloth segmentation |
+| [MODNet](./seg_lib/modnet) | Portrait matting |
+| [RAFT](./seg_lib#raft) | Optical flow |
 
-more details refer [face_lib](./face_lib)
+### art_lib - AIGC & Video Effects
 
-<details open>
-<summary>(click to collapse)</summary>
+| Model | Function |
+|-------|----------|
+| [DCTNet](./art_lib/style_transfer/dct_net) | Style transfer |
+| [LaMa](./art_lib/inpainting/lama.py) | Image inpainting |
+| [TPSMM](./art_lib/talking_head/tpsmm) | Talking head synthesis |
+| [SadTalker](./art_lib/talking_head/sadtalker) | Talking head synthesis |
+| [Wav2Lip](./art_lib/talking_head/wav2lip) | Lip sync |
+| [DINet](./art_lib/talking_head/dinet_boost) | Talking head synthesis |
 
-- [x] [EyeOpenDetect](https://github.com/abhilb/Open-eye-closed-eye-classification) (eye close detect)
-- [x] [IrisLandmark](https://github.com/Kazuhito00/iris-detection-using-py-mediapipe) 
-- [x] [Deep3DFace](https://github.com/microsoft/Deep3DFaceReconstruction) (face 3d)
-- [x] [*MobileNetV3](https://github.com/open-mmlab/mmclassification/tree/master/configs/mobilenet_v3) (face attitrbute) 
-- [x] [MTCNN](https://github.com/taotaonice/FaceShifter/blob/master/face_modules/mtcnn.py) (face detect)
-- [x] [FAN](https://github.com/1adrianb/2D-and-3D-face-alignment)
-- [x] [S3FD](https://github.com/iperov/DeepFaceLive/blob/master/modelhub/onnx/S3FD/S3FD.py)
-- [x] [SCRFD](https://github.com/deepinsight/insightface/tree/master/detection/scrfd) 
-- [x] [ArcFace](https://github.com/neuralchen/SimSwap/blob/01a8d6d0a6fd7e7b0052a5832328fba33f2b8414/models/fs_model.py#L63) (face embedding)
-- [x] [CurricularFace](https://github.com/HuangYG123/CurricularFace)
-- [x] [InsightFace](https://github.com/deepinsight/insightface/tree/master/model_zoo) 
-- [x] [PFPLD](https://github.com/hanson-young/nniefacelib/tree/master/PFPLD/models/onnx) (face landmark)
-- [x] [*XsegNet](./face_lib#face-parsing) (face parsing)
-- [x] [face-parsing.PyTorch](./face_lib#face-parsing)
-- [x] [GPEN](https://github.com/yangxy/GPEN) (face restore)
-- [x] [DFDNet](https://github.com/csxmli2016/DFDNet) 
-- [x] [GFPGAN](https://github.com/TencentARC/GFPGAN) 
-- [x] [RestoreFormer](https://github.com/wzhouxiff/RestoreFormer) 
-- [x] [CodeFormer](https://github.com/sczhou/CodeFormer) 
-- [x] [*HifiFace](./face_lib#face-swap) (face swap)
-- [x] [InSwapper](./face_lib#face-swap)
-- [x] [FaceFusion](./face_lib#face-swap)
+### sd_lib - Stable Diffusion Tools
 
+| Module | Description |
+|--------|-------------|
+| [ControlNet](./sd_lib/controlnet) | ControlNet inference |
+| [IP-Adapter](./sd_lib/ip_adapter) | IP-Adapter for image-prompted generation |
+| [Prompt2Prompt](./sd_lib/prompt2prompt) | Prompt-based image editing |
+| [CLIP Encoder](./sd_lib/clip_encoder.py) | Text encoding |
+| [DDIM Inversion](./sd_lib/inversion_api.py) | Image inversion |
+| [Tagger](./sd_lib/tagger) | Image tagging/WD14 |
 
+### ocr_lib - OCR
 
-Supported body related models&methods:
+| Model | Description |
+|-------|-------------|
+| [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR) | General-purpose OCR |
 
-more details refer [body_lib](./body_lib)
+### data_lib - Dataset Tools
 
-<details open>
-<summary>(click to collapse)</summary>
+COCO format conversion, dataset preprocessing, visualization utilities.
 
-- [x] [yolox_tiny/yolox_s](https://github.com/open-mmlab/mmdetection) (mmdetection) (body bbox)
-- [x] [hrnetv2w32](https://modelscope.cn/models/damo/cv_hrnetv2w32_body-2d-keypoints_image/summary)  (modelscope) (body keypoints)
-- [x] [BlazePose](https://github.com/PINTO0309/PINTO_model_zoo/tree/main/053_BlazePose)
-- [x] [lightweight-human-pose-estimation](https://github.com/Daniil-Osokin/lightweight-human-pose-estimation.pytorch)
-- [x] [MoveNet](https://tfhub.dev/s?q=movenet)
-- [x] [kapao](https://github.com/wmcnally/kapao)
+### math_lib / utils - Utilities
 
-
-
-Supported hand related models&methods:
-
-more details refer [hand_lib](./hand_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [yolox_tiny](https://github.com/open-mmlab/mmdetection) (mmdetection) (hand 21 keypoints detect) 
-- [x] [hand_detector.d2](https://github.com/ddshan/hand_detector.d2) (hand bbox)
-- [x] [mediapipe hands](https://google.github.io/mediapipe/solutions/hands)
-- [x] [*yolox](https://github.com/open-mmlab/mmdetection/blob/master/configs/yolox)
-- [x] [minimal-hand](https://github.com/CalciferZh/minimal-hand) (hand mesh)
-- [x] [frankmocap hand regressor](https://github.com/facebookresearch/frankmocap) (hand pose)
-
-
-
-Supported mocap related models&methods:
-
-more details refer [mocap_lib](./mocap_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [SPIN](https://github.com/nkolot/SPIN) (body regress) 
-- [x] [r50/vipnas_mbv3_dark/hrnet_w48_384_dark etc.](https://github.com/open-mmlab/mmpose) (mmpose) (whole body keypoints)
-- [x] [mediapipe holistic](https://google.github.io/mediapipe/solutions/holistic.html)
-- [x] [Calibration](./mocap_lib#calibration)
-- [x] [Smooth Filter](./mocap_lib#smooth-filter)
-- [x] [Triangulate](./mocap_lib#triangulation)
-
-
-
-Supported segmentation related models&methods:
-
-more details refer [seg_lib](./seg_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [carvekit](./seg_lib#carvekit)
-- [x] [cihp_pgn](./seg_lib#cihp_pgn)
-- [x] [ppmattingv2](./seg_lib#ppmattingv2)
-- [x] [RAFT](./seg_lib#raft)
-- [x] [u2net](./seg_lib#u2net) (object segmentation) 
-- [x] [cv_u2net_salient-detection](./seg_lib#u2net)
-
-Supported AIGC related models&methods:
-
-more details refer [art_lib](./seg_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [DCTNet](./seg_lib#style-transfer) (style transfer) 
-- [x] [TPSMM](./seg_lib#talking-head) (talking head) 
-- [x] [SadTalker](./seg_lib#talking-head)
-- [x] [Wav2lip](./seg_lib#talking-head)
-
-
-Supported GPT related models&methods:
-
-more details refer [gpt_lib](./seg_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [ChatGLM6B finetune](https://github.com/mymusise/ChatGLM-Tuning)
-- [x] [OPENAI API]()
-- [x] [langchain]()
-- [x] [lora finetune]()
-- [x] [text splitter](https://www.modelscope.cn/models/damo/nlp_bert_document-segmentation_chinese-base/summary)
-
-
-Supported audio related models&methods:
-
-more details refer [audio_power](https://github.com/ykk648/audio_power)
-
-
-Supported OCR related models&methods:
-
-more details refer [ocr_lib](./ocr_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [paddleocr](https://github.com/PaddlePaddle/PaddleOCR) 
-
+Affine transforms, Gaussian filters, K-means, timing tools, path helpers.
