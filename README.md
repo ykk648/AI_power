@@ -4,6 +4,8 @@ This repo is no longer maintained.
 
 All face related API move to [face_power](https://github.com/ykk648/face_power)
 
+All audio related API move to [audio_power](https://github.com/ykk648/audio_power)
+
 ## Convenience API for your AI power
 
 All pretrain models and supply materials can be accessed by my share link:
@@ -146,18 +148,12 @@ more details refer [gpt_lib](./seg_lib)
 
 Supported audio related models&methods:
 
-more details refer [audio_lib](./audio_lib)
-
-<details open>
-<summary>(click to collapse)</summary>
-
-- [x] [sovits](https://github.com/voicepaw/so-vits-svc-fork) (svc) 
-- [x] [bark](https://github.com/suno-ai/bark) (tts) 
+more details refer [audio_power](https://github.com/ykk648/audio_power)
 
 
 Supported OCR related models&methods:
 
-more details refer [ocr_lib](./audio_lib)
+more details refer [ocr_lib](./ocr_lib)
 
 <details open>
 <summary>(click to collapse)</summary>
