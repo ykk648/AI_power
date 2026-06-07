@@ -18,6 +18,12 @@
 
 - [pp_mattingv2](https://github.com/jiachen0212/pp_mattingv2)
 
+### green_screen_matting
+
+- Green screen (chroma-key) video matting and background replacement, based on [BackgroundMattingV2](https://github.com/PeterL1n/BackgroundMattingV2).
+- Supports frame-by-frame matting with audio preservation via FFmpeg.
+- PyTorch model (ResNet50 backbone), requires `content/pytorch_resnet50.pth` weights.
+
 ### RAFT
 
 - [RAFT](https://github.com/princeton-vl/RAFT)

@@ -129,9 +129,12 @@ dmypy.json
 .pyre/
 
 # my ignore
+.idea/
 cache/
 pretrain_models/
 private_models/
 sd_models/
 skeleton_imgs/
 resources/
+seg_lib/green_screen_matting/content/*.pth
+seg_lib/green_screen_matting/data/*.mp4
